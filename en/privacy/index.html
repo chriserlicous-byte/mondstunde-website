@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy policy – Mondstunde</title>
+<meta name="description" content="Privacy policy – Mondstunde">
+<meta name="theme-color" content="#0B1029">
+<link rel="canonical" href="https://mondstunde.com/en/privacy/">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="wrap top">
+  <a class="brand" href="/en/"><img src="/assets/zeichen.png" alt="" width="36" height="36">Mondstunde</a>
+  <nav aria-label="Hauptmenü"><a href="/en/#vorteile">Why Mondstunde</a><a href="/en/#screens">Screenshots</a><a href="/en/#preise">Pricing</a><a href="/en/support/">Help</a><a href="/">Deutsch</a></nav>
+</header>
+<main>
+<div class="wrap narrow doc">
+<!--
+  DRAFT, 14 Oct 2026 – English translation of the German privacy policy (/datenschutz/).
+  The German version is authoritative. Fill in the placeholders and have both versions reviewed before launch.
+-->
+  <h1>Privacy policy</h1>
+  <p class="muted">Mondstunde app and website · Last updated: 14 October 2026 · The <a href="/datenschutz/">German version</a> is legally binding.</p>
+
+  <section class="summary">
+    <h2>In short</h2>
+    <ul>
+      <li>You <strong>don't need an account</strong>. The app signs in with a random, anonymous ID.</li>
+      <li>For a story we only send your child's <strong>first name, age and form of address</strong>, the options you chose and the names of other characters. For reading aloud, the text of the story is added.</li>
+      <li>Stories and audio are stored <strong>only on your device</strong>, not on our servers.</li>
+      <li>The AI (Google Gemini) does <strong>not use your input for training</strong>.</li>
+      <li>Anonymous usage statistics are collected <strong>only with your consent</strong>. You can turn them off in Settings at any time.</li>
+      <li>No ads, no tracking across other apps, no selling of data.</li>
+    </ul>
+  </section>
+
+  <h2>1. Controller</h2>
+  <p>
+    <span class="todo">[First and last name or company]</span><br>
+    <span class="todo">[Street and number]</span><br>
+    <span class="todo">[Postcode, city, country]</span><br>
+    Email: <a href="mailto:datenschutz@mondstunde.com">datenschutz@mondstunde.com</a>
+  </p>
+  <p>No data protection officer has been appointed, as there is no legal obligation to do so.</p>
+
+  <h2>2. Who the app is for</h2>
+  <p>
+    Mondstunde is meant for parents and other adults who read stories to children. You enter the details
+    about the child (first name, age, form of address) as an adult. Please don't enter sensitive information
+    such as health details, surnames or addresses in free-text fields (e.g. your own theme, your own goal or
+    names of siblings, friends and cuddly toys). They are not needed for the story.
+  </p>
+
+  <h2>3. Anonymous sign-in</h2>
+  <p>
+    When you create your first story, the app automatically creates a random ID with our backend provider
+    Supabase. It contains no name, no email address and no phone number. The credentials for this ID are
+    stored securely in your device's keychain.
+  </p>
+  <p>
+    With every request, the server processes your IP address and the time and type of request for technical
+    reasons (server logs). These logs serve secure operation and are deleted after 7 days at most.
+  </p>
+  <p class="muted">
+    Legal basis: Art. 6(1)(b) GDPR (providing the app); for logs Art. 6(1)(f) GDPR (legitimate interest in
+    security and abuse prevention). Storing the credentials on the device: § 25(2) no. 2 TDDDG (strictly necessary).
+  </p>
+
+  <h2>4. Creating stories</h2>
+  <p>When you create a story or a continuation, the app sends the following to our server:</p>
+  <ul>
+    <li>the child's first name, age and form of address ("girl", "boy" or "name only")</li>
+    <li>the chosen world, goal, sub-topic, length, language level and any text you entered for them</li>
+    <li>names of other characters you enter (e.g. siblings, friends, cuddly toys) and whether your child appears in the story</li>
+    <li>for continuations: the previous story and the chosen direction</li>
+  </ul>
+  <p>
+    Our server forwards this information to the AI <strong>Google Gemini</strong>, which writes the story and checks
+    it for child-appropriate content. The finished story is returned to the app. <strong>We store neither your input
+    nor the story on our server.</strong>
+  </p>
+  <p>
+    According to its terms, Google does not use requests to the paid Gemini service to improve its own products or
+    to train AI models. Google keeps requests and responses only for a limited time to detect abuse and meet legal
+    obligations. Processing is based on Google's data processing agreement.
+  </p>
+  <p class="muted">Legal basis: Art. 6(1)(b) GDPR (creating the story you requested).</p>
+  <p class="muted">Note: the stories are generated by AI. Despite the checks they may contain mistakes.</p>
+
+  <h2>5. Reading aloud with the AI voice</h2>
+  <p>
+    To read a story aloud with the AI voice, the app sends the text of the story section by section via our server
+    to Google Gemini, together with the chosen voice. The generated audio is returned to the app and stored
+    <strong>only on your device</strong>. So that "Listen" starts right away, the beginning is voiced right after a
+    story is created if you chose "AI voice". With "Read it yourself" this only happens when you explicitly ask for it.
+  </p>
+  <p>
+    Our server only voices texts it generated itself. For this, every paragraph gets a cryptographic signature that
+    contains no personal data.
+  </p>
+  <p>Alternatively, stories can be read aloud with the iOS device voice. This happens entirely on your device.</p>
+  <p class="muted">Legal basis: Art. 6(1)(b) GDPR.</p>
+
+  <h2>6. Usage allowance</h2>
+  <p>
+    To provide the free story and the subscription allowances and to prevent abuse, we store only two numbers per
+    week for your anonymous ID: how many stories were created and how many seconds were read aloud. No content or
+    names are stored. The app shows your current balance in Settings.
+  </p>
+  <p class="muted">Legal basis: Art. 6(1)(b) and (f) GDPR.</p>
+
+  <h2>7. Data on your device</h2>
+  <p>
+    Child profiles, stories, favorites, voiced audio and your settings are stored only in the app on your device.
+    They are included in your device backup (e.g. iCloud Backup) if you use it. Deleting the app removes them.
+  </p>
+  <p>The bedtime reminder is a local notification on your device. No data is sent to us for it.</p>
+
+  <h2>8. Anonymous usage statistics (only with consent)</h2>
+  <p>
+    If you agree, we send anonymous usage signals to <strong>TelemetryDeck</strong> (TelemetryDeck GmbH, Germany).
+    Examples: "onboarding step viewed", "story created" (with world, goal and length), "story listened to the end",
+    "subscription page shown". This shows us which features are used and where the app needs improvement.
+  </p>
+  <p>
+    <strong>No names, no texts and no story content</strong> are transmitted. TelemetryDeck does not store IP addresses
+    and only receives a hashed device ID that cannot be traced back to you.
+  </p>
+  <p>
+    You can withdraw your consent at any time in the app under <em>Settings → Privacy → Share anonymous usage
+    statistics</em>. After that, no more signals are sent.
+  </p>
+  <p class="muted">Legal basis: Art. 6(1)(a) GDPR and § 25(1) TDDDG (consent).</p>
+
+  <h2>9. Subscriptions</h2>
+  <p>
+    Subscriptions are purchased and billed exclusively through Apple's App Store. Only Apple processes payment and
+    account data. We only receive the information whether a subscription is active. Apple's privacy policy applies.
+  </p>
+  <p class="muted">Legal basis: Art. 6(1)(b) GDPR.</p>
+
+  <h2>10. Recipients and processors</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Provider</th><th>Purpose</th><th>Place of processing</th></tr></thead>
+      <tbody>
+        <tr><td>Supabase, Inc. (USA)</td><td>Server, anonymous sign-in, usage counters</td><td>Data center in Frankfurt am Main (EU)</td></tr>
+        <tr><td>Google <span class="todo">[contracting entity per Google's DPA, e.g. Google Cloud EMEA Ltd., Ireland]</span></td><td>AI for text and voice (Gemini)</td><td>EU and other countries where Google operates data centers</td></tr>
+        <tr><td>TelemetryDeck GmbH (Germany)</td><td>Anonymous usage statistics, only with consent</td><td>EU</td></tr>
+        <tr><td>GitHub, Inc. (USA)</td><td>Hosting this website (GitHub Pages)</td><td>USA and other countries</td></tr>
+        <tr><td>Apple (App Store)</td><td>Download, subscriptions, payment</td><td>see Apple's privacy policy</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Data processing agreements under Art. 28 GDPR are in place with Supabase, Google and TelemetryDeck. <span class="todo">[conclude before launch]</span></p>
+
+  <h2>11. Transfers outside the EU</h2>
+  <p>
+    Supabase, Google and GitHub are headquartered in the USA, so access from or processing in the USA cannot be ruled
+    out. This is based on the European Commission's adequacy decision for the EU-US Data Privacy Framework where the
+    provider is certified, and otherwise on the EU standard contractual clauses (Art. 46(2)(c) GDPR).
+    <span class="todo">[check providers' certification before launch]</span>
+  </p>
+
+  <h2>12. Storage periods</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Data</th><th>How long</th></tr></thead>
+      <tbody>
+        <tr><td>Input for a story, text for reading aloud</td><td>not stored on our server; at Google only briefly for abuse detection</td></tr>
+        <tr><td>Server logs (incl. IP address)</td><td>7 days at most</td></tr>
+        <tr><td>Weekly usage counters</td><td>13 weeks, then deleted automatically</td></tr>
+        <tr><td>Anonymous ID</td><td>until 6 months after last use, then deleted automatically</td></tr>
+        <tr><td>Stories, audio and profiles on your device</td><td>until you delete them or the app</td></tr>
+        <tr><td>Usage statistics (TelemetryDeck)</td><td>anonymous, per TelemetryDeck's retention periods</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>13. Your rights</h2>
+  <p>You have the right to</p>
+  <ul>
+    <li>access your stored data (Art. 15 GDPR),</li>
+    <li>rectification (Art. 16 GDPR) and erasure (Art. 17 GDPR),</li>
+    <li>restriction of processing (Art. 18 GDPR) and data portability (Art. 20 GDPR),</li>
+    <li>object to processing based on legitimate interests (Art. 21 GDPR),</li>
+    <li>withdraw consent with effect for the future (Art. 7(3) GDPR).</li>
+  </ul>
+  <p>
+    Since we don't know you by name, most data is stored only on your device, where you can delete it at any time.
+    For questions and requests, write to <a href="mailto:datenschutz@mondstunde.com">datenschutz@mondstunde.com</a>.
+  </p>
+  <p>
+    You can also lodge a complaint with a data protection supervisory authority, e.g.
+    <span class="todo">[competent state data protection authority at the controller's seat]</span>.
+  </p>
+
+  <h2>14. This website</h2>
+  <p>
+    The website mondstunde.com is stored and delivered by <strong>GitHub Pages</strong> (GitHub, Inc., USA). When you
+    visit, GitHub processes your IP address, the time, the requested page and information about your browser and
+    operating system in server logs for technical reasons, to deliver the site and protect it against attacks.
+  </p>
+  <p>
+    The website sets <strong>no cookies</strong>, uses <strong>no analytics or tracking services</strong> and loads no
+    fonts or content from other servers.
+  </p>
+  <p class="muted">Legal basis: Art. 6(1)(f) GDPR (legitimate interest in providing the website securely and reliably).
+    Transfer to the USA based on the EU-US Data Privacy Framework or standard contractual clauses.
+    <span class="todo">[check GitHub's certification]</span></p>
+
+  <h2>15. Changes</h2>
+  <p>As we develop the app further, we update this policy. The current version is always available on this page and in the app.</p>
+
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Mondstunde · <a href="mailto:hallo@mondstunde.com">hallo@mondstunde.com</a></span>
+    <nav aria-label="Rechtliches"><a href="/en/support/">Help</a><a href="/en/privacy/" aria-current="page">Privacy</a><a href="/impressum/">Legal notice</a><a href="/">Deutsch</a></nav>
+  </div>
+</footer>
+</body>
+</html>

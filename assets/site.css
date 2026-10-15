@@ -1,0 +1,151 @@
+/* Mondstunde – eine ruhige Nachtseite im Stil der App: Nachtblau, Goldgelb, runde Schrift.
+   Keine externen Dateien (keine Webfonts, kein Tracking): SF Rounded auf Apple-Geräten, sonst Systemschrift. */
+:root {
+  --night: #141B3C;
+  --night-deep: #0B1029;
+  --card: #1D2550;
+  --card-high: #2E3870;
+  --cream: #F4EEDC;
+  --mist: #A9B0D6;
+  --gold: #F5D77A;
+  --line: rgba(244, 238, 220, 0.12);
+  --todo: rgba(245, 215, 122, 0.16);
+  --font: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  color: var(--cream);
+  font: 17px/1.6 var(--font);
+  background:
+    radial-gradient(1px 1px at 12% 18%, rgba(244,238,220,.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 9%, rgba(244,238,220,.6) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 64% 32%, rgba(244,238,220,.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 30% 44%, rgba(244,238,220,.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 58%, rgba(244,238,220,.5) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 8% 72%, rgba(244,238,220,.4) 50%, transparent 51%),
+    linear-gradient(180deg, var(--night-deep) 0%, var(--night) 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+a { color: var(--gold); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+img { max-width: 100%; height: auto; display: block; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+.narrow { max-width: 760px; }
+
+/* Kopf */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--cream); text-decoration: none; font-weight: 700; font-size: 20px; }
+.brand img { width: 36px; height: 36px; }
+.top nav { display: flex; gap: 18px; flex-wrap: wrap; font-size: 15px; }
+.top nav a { color: var(--mist); text-decoration: none; }
+.top nav a:hover, .top nav a[aria-current="page"] { color: var(--cream); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; padding-block: 40px 56px; }
+.hero h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.08; margin: 0 0 16px; text-wrap: balance; }
+.hero p.lead { font-size: 20px; color: var(--mist); margin: 0 0 28px; max-width: 34ch; }
+.hero .device { justify-self: center; }
+
+/* iPhone-Rahmen (Maße des iPhone 18 Pro Max, alles relativ zur Breite --w):
+   schmaler schwarzer Rand, Titankante, Displayrundung, Dynamic Island und Seitentasten. */
+.device {
+  --w: min(320px, 78vw);
+  position: relative;
+  width: var(--w);
+  padding: calc(var(--w) * 0.034);
+  border-radius: calc(var(--w) * 0.17);
+  background: #07080c;
+  box-shadow:
+    0 0 0 calc(var(--w) * 0.008) #4a4f5c,
+    0 0 0 calc(var(--w) * 0.014) #1a1d24,
+    0 calc(var(--w) * 0.1) calc(var(--w) * 0.2) rgba(0, 0, 0, 0.5);
+}
+.device img { width: 100%; border-radius: calc(var(--w) * 0.136); }
+.device::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--w) * 0.057);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--w) * 0.267);
+  height: calc(var(--w) * 0.078);
+  border-radius: 999px;
+  background: #000;
+}
+.device .button {
+  position: absolute;
+  width: calc(var(--w) * 0.014);
+  background: #4a4f5c;
+}
+.device .button.left { left: calc(var(--w) * -0.026); border-radius: 2px 0 0 2px; }
+.device .button.right { right: calc(var(--w) * -0.026); border-radius: 0 2px 2px 0; }
+.device .action { top: 18%; height: 4.5%; }
+.device .volume-up { top: 26%; height: 8%; }
+.device .volume-down { top: 36%; height: 8%; }
+.device .side { top: 29%; height: 13%; }
+.store { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--night); font-weight: 700; padding: 14px 22px; border-radius: 16px; text-decoration: none; }
+.store small { display: block; font-weight: 600; font-size: 12px; opacity: .75; }
+.note { color: var(--mist); font-size: 14px; margin-top: 12px; }
+
+/* Abschnitte */
+section { padding-block: 40px; }
+h2 { font-size: clamp(26px, 3.4vw, 34px); line-height: 1.2; margin: 0 0 8px; text-wrap: balance; }
+.sub { color: var(--mist); margin: 0 0 28px; max-width: 60ch; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+.card { background: var(--card); border-radius: 20px; padding: 22px; }
+.card h3 { margin: 12px 0 6px; font-size: 19px; }
+.card p { margin: 0; color: var(--mist); }
+.icon { width: 40px; height: 40px; border-radius: 50%; background: var(--gold); color: var(--night); display: grid; place-items: center; }
+.icon svg { width: 22px; height: 22px; }
+
+/* Screenshots */
+.shots { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 240px); gap: 16px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; }
+.shots img { border-radius: 24px; scroll-snap-align: start; border: 1px solid var(--line); }
+
+/* Preise */
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.plan { background: var(--card); border-radius: 22px; padding: 24px; }
+.plan.featured { outline: 2px solid var(--gold); }
+.plan .badge { display: inline-block; background: var(--gold); color: var(--night); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.plan h3 { font-size: 22px; margin: 10px 0 4px; }
+.price { font-size: 30px; font-weight: 700; margin: 8px 0 0; font-variant-numeric: tabular-nums; }
+.price small { font-size: 15px; font-weight: 500; color: var(--mist); }
+.plan ul { padding-left: 20px; color: var(--mist); margin: 14px 0 0; }
+.plan li { margin-bottom: 6px; }
+
+/* Textseiten (Support, Datenschutz, Impressum) */
+.doc { padding-block: 24px 64px; }
+.doc h1 { font-size: clamp(30px, 4vw, 40px); margin: 16px 0 4px; }
+.doc h2 { font-size: 22px; color: var(--gold); margin: 40px 0 10px; }
+.doc h3 { font-size: 18px; margin: 24px 0 6px; }
+.doc .muted { color: var(--mist); }
+.doc ul { padding-left: 22px; }
+.summary { background: var(--card); border-radius: 18px; padding: 18px 22px; margin-top: 28px; }
+.summary h2 { margin-top: 4px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--mist); font-weight: 600; }
+.todo { background: var(--todo); color: var(--gold); border-radius: 6px; padding: 0 4px; }
+details { background: var(--card); border-radius: 16px; padding: 14px 18px; margin-bottom: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { color: var(--mist); margin: 10px 0 4px; }
+
+/* Fuß */
+footer { border-top: 1px solid var(--line); margin-top: 40px; padding-block: 28px 40px; color: var(--mist); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+footer nav { display: flex; flex-wrap: wrap; gap: 16px; }
+footer a { color: var(--mist); }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding-block: 16px 32px; }
+  .hero p.lead { max-width: none; }
+  .top nav { display: none; }
+}
