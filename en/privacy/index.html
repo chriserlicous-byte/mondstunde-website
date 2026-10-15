@@ -24,7 +24,7 @@
 <main>
 <div class="wrap narrow doc">
   <h1>Privacy policy</h1>
-  <p class="muted">Mondstunde app and website · Last updated: 14 October 2026 · The <a href="/datenschutz/">German version</a> is legally binding.</p>
+  <p class="muted">Mondstunde app and website · Last updated: 15 October 2026 · The <a href="/datenschutz/">German version</a> is legally binding.</p>
 
   <section class="summary">
     <h2>In short</h2>
@@ -140,7 +140,10 @@
   <h2>9. Subscriptions</h2>
   <p>
     Subscriptions are purchased and billed exclusively through Apple's App Store. Only Apple processes payment and
-    account data. We only receive the information whether a subscription is active. Apple's privacy policy applies.
+    account data. To unlock your subscription in the app, our server verifies the purchase with Apple and stores, linked to
+    your anonymous ID: Apple's transaction number of the subscription, the product (Family or Basic), the expiry date and
+    whether it is a test purchase. We never receive your name, Apple ID or payment details. Apple's privacy policy applies
+    to the purchase itself.
   </p>
   <p class="muted">Legal basis: Art. 6(1)(b) GDPR.</p>
 
@@ -149,7 +152,7 @@
     <table>
       <thead><tr><th>Provider</th><th>Purpose</th><th>Place of processing</th></tr></thead>
       <tbody>
-        <tr><td>Supabase, Inc. (USA)</td><td>Server, anonymous sign-in, usage counters</td><td>Data center in Frankfurt am Main (EU)</td></tr>
+        <tr><td>Supabase, Inc. (USA)</td><td>Server, anonymous sign-in, usage counters, subscription status</td><td>Data center in Frankfurt am Main (EU)</td></tr>
         <tr><td>Google (Gemini API)</td><td>AI for text and voice (Gemini)</td><td>EU and other countries where Google operates data centers</td></tr>
         <tr><td>TelemetryDeck GmbH (Germany)</td><td>Anonymous usage statistics, only with consent</td><td>EU</td></tr>
         <tr><td>GitHub, Inc. (USA)</td><td>Hosting this website (GitHub Pages)</td><td>USA and other countries</td></tr>
@@ -175,6 +178,7 @@
         <tr><td>Server logs (incl. IP address)</td><td>7 days at most</td></tr>
         <tr><td>Weekly usage counters</td><td>13 weeks, then deleted automatically</td></tr>
         <tr><td>Anonymous ID</td><td>until 6 months after last use, then deleted automatically</td></tr>
+        <tr><td>Subscription status (transaction number, product, expiry date)</td><td>together with the anonymous ID, i.e. at most 6 months after last use</td></tr>
         <tr><td>Stories, audio and profiles on your device</td><td>until you delete them or the app</td></tr>
         <tr><td>Usage statistics (TelemetryDeck)</td><td>anonymous, per TelemetryDeck's retention periods</td></tr>
       </tbody>
