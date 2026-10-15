@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kontakt – Mondstunde</title>
+<meta name="description" content="Fragen zur App, zum Abo oder eine Idee für Mondstunde? Schreib uns, wir antworten so schnell wie möglich per E-Mail.">
+<meta name="theme-color" content="#0B1029">
+<meta property="og:title" content="Kontakt – Mondstunde">
+<meta property="og:description" content="Fragen zur App, zum Abo oder eine Idee für Mondstunde? Schreib uns, wir antworten so schnell wie möglich per E-Mail.">
+<meta property="og:image" content="https://mondstunde.com/assets/hero-de.jpg">
+<link rel="canonical" href="https://mondstunde.com/kontakt/">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="stylesheet" href="/assets/site.css?v=cf5f552a">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><img src="/assets/zeichen.png" alt="" width="34" height="34">Mondstunde</a>
+    <nav aria-label="Hauptmenü"><a href="/#vorteile" class="wide">Vorteile</a><a href="/#screens" class="wide">So sieht's aus</a><a href="/#preise" class="wide">Preise</a><a href="/support/" class="wide">Hilfe</a><a href="/en/" class="lang">English</a></nav>
+  </div>
+</header>
+<main>
+
+<div class="wrap narrow doc">
+  <h1>Kontakt</h1>
+  <p class="muted">Fragen zur App, zum Abo oder eine Idee für Mondstunde? Schreib uns, wir antworten so schnell wie möglich per E-Mail.</p>
+  <form class="contact-form" id="contact-form" novalidate>
+    <label><span>Name <span class="optional">(optional)</span></span>
+      <input name="name" type="text" maxlength="100" autocomplete="name"></label>
+    <label><span>E-Mail-Adresse</span>
+      <input name="email" type="email" maxlength="200" autocomplete="email" required aria-describedby="email-hint">
+      <span class="hint" id="email-hint">Damit wir dir antworten können.</span></label>
+    <label><span>Nachricht</span>
+      <textarea name="message" rows="7" maxlength="5000" required></textarea></label>
+    <label class="trap" aria-hidden="true">Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+    <p class="hint">Wir speichern deine Angaben, um dir zu antworten, und löschen sie nach 2 Jahren. Mehr dazu in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
+    <button type="submit">Nachricht senden</button>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+  <p class="muted">Lieber per E-Mail? <a href="mailto:hallo@mondstunde.com">hallo@mondstunde.com</a></p>
+</div>
+<script>
+(() => {
+  const form = document.getElementById("contact-form");
+  const status = form.querySelector(".form-status");
+  const button = form.querySelector("button");
+  const started = Date.now();
+  const text = { ok: "Danke! Deine Nachricht ist angekommen. Wir melden uns per E-Mail bei dir.", email: "Bitte gib eine gültige E-Mail-Adresse ein.", rate: "Gerade kommen sehr viele Nachrichten an. Bitte versuch es später noch einmal oder schreib an hallo@mondstunde.com.", error: "Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib an hallo@mondstunde.com." };
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    if (!form.email.checkValidity() || !data.email) { status.textContent = text.email; status.className = "form-status error"; form.email.focus(); return; }
+    if (!data.message.trim()) { form.message.focus(); return; }
+    button.disabled = true; button.textContent = "Wird gesendet …"; status.textContent = "";
+    try {
+      const response = await fetch("https://qjlkaladwatouucvfhaa.supabase.co/functions/v1/contact", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, language: "de", elapsed: Date.now() - started }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.ok) { form.reset(); form.querySelectorAll("label, button, .hint").forEach((el) => el.hidden = true); status.textContent = text.ok; status.className = "form-status ok"; return; }
+      status.textContent = result.error === "invalid_email" ? text.email : result.error === "rate_limited" ? text.rate : text.error;
+    } catch { status.textContent = text.error; }
+    status.className = "form-status error";
+    button.disabled = false; button.textContent = "Nachricht senden";
+  });
+})();
+</script>
+
+</main>
+<footer>
+  <div class="wrap foot">
+    <a class="brand small" href="/"><img src="/assets/zeichen.png" alt="" width="26" height="26">Mondstunde</a>
+    <nav aria-label="Rechtliches"><a href="/support/">Hilfe</a><a href="/kontakt/" aria-current="page">Kontakt</a><a href="/nutzungsbedingungen/">Nutzungsbedingungen</a><a href="/datenschutz/">Datenschutz</a><a href="/impressum/">Impressum</a><a href="/en/">English</a></nav>
+    <span class="copy">© 2026 Mondstunde · <a href="mailto:hallo@mondstunde.com">hallo@mondstunde.com</a></span>
+  </div>
+</footer>
+</body>
+</html>
