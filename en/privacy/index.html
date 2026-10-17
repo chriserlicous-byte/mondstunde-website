@@ -133,8 +133,11 @@
   <h2>6. Usage allowance</h2>
   <p>
     To provide the free story and the subscription allowances and to prevent abuse, we store only two numbers per
-    week for your anonymous ID: how many stories were created and how many seconds were read aloud. No content or
-    names are stored. The app shows your current balance in Settings.
+    week: how many stories were created and how many seconds were read aloud. Without a subscription, we count them for
+    your anonymous ID. With a subscription, we count them for Apple's transaction number of the subscription, so that all
+    devices on one subscription share the allowance. These subscription counters are not linked to any ID and therefore
+    remain after "Delete all data" until they are deleted automatically after 13 weeks. Otherwise, deleting could reset
+    the allowance. No content or names are stored. The app shows your current balance in Settings.
   </p>
   <p class="muted">Legal basis: Art. 6(1)(b) and (f) GDPR.</p>
 
@@ -170,8 +173,8 @@
   <p>
     Subscriptions are purchased and billed exclusively through Apple's App Store. Only Apple processes payment and
     account data. To unlock your subscription in the app, our server verifies the purchase with Apple and stores, linked to
-    your anonymous ID: Apple's transaction number of the subscription, the product (Family or Basic), the expiry date and
-    whether it is a test purchase. We never receive your name, Apple ID or payment details. Apple's privacy policy applies
+    your anonymous ID: Apple's transaction number of the subscription, the product (Family or Basic), the expiry date, whether a
+    free trial is running, and whether it is a test purchase. We never receive your name, Apple ID or payment details. Apple's privacy policy applies
     to the purchase itself.
   </p>
   <p>
@@ -240,9 +243,9 @@
       <tbody>
         <tr><td>Input for a story, text for reading aloud</td><td>not stored on our server; at Google only briefly for abuse detection</td></tr>
         <tr><td>Server logs (incl. IP address)</td><td>7 days at most</td></tr>
-        <tr><td>Weekly usage counters</td><td>13 weeks, then deleted automatically</td></tr>
+        <tr><td>Weekly usage counters (per ID or per subscription)</td><td>13 weeks, then deleted automatically; subscription counters also after "Delete all data"</td></tr>
         <tr><td>Anonymous ID</td><td>until 6 months after last use, then deleted automatically</td></tr>
-        <tr><td>Subscription status (transaction number, product, expiry date)</td><td>together with the anonymous ID, i.e. at most 6 months after last use</td></tr>
+        <tr><td>Subscription status (transaction number, product, expiry date, free trial)</td><td>together with the anonymous ID, i.e. at most 6 months after last use</td></tr>
         <tr><td>Emails to us</td><td>2 years after the request has been completed</td></tr>
         <tr><td>Offer code data (code, transaction numbers, product, price, billings)</td><td>2 years after the code is redeemed, then deleted automatically</td></tr>
         <tr><td>Messages from the contact form</td><td>2 years after they arrive, then deleted automatically</td></tr>
