@@ -65,6 +65,9 @@ button, select, input { font: inherit; color: inherit; }
   border-radius: 14px; padding: 10px 14px; margin: 0 0 16px; font-size: .92rem;
 }
 .banner.err { background: rgba(242, 158, 142, .12); border-color: rgba(242, 158, 142, .4); color: var(--neg); }
+.banner.alarm { background: #5A1F2B; border-color: #F29E8E; color: #FFE3DC; font-size: 1rem; }
+.banner.alarm strong { display: block; font-size: 1.08rem; margin-bottom: 2px; color: #fff; }
+.banner a { color: inherit; font-weight: 700; }
 .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
 .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; min-width: 0; }
 .kpi .label { color: var(--mist); font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
@@ -321,7 +324,7 @@ function render() {
   if (d.period.environment === "Sandbox") banners.push("TestFlight-Ansicht: Käufe aus der Sandbox (kein echtes Geld). KI-Kosten sind immer echt und für alle Umgebungen zusammen.");
   if (!d.firstStoreEvent && !DEMO) banners.push("Noch keine App Store-Mitteilungen in dieser Umgebung – Erlös und Abos erscheinen mit dem ersten Kauf.");
   if (t.voiceEUR > 0 && reserveShare > 0.1) banners.push(`Achtung: ${pct(reserveShare)} der Stimmkosten liefen über die teurere Reserve-Stimme (Limit bei Flash-Lite erreicht).`);
-  $("banner").innerHTML = banners.map((b) => `<div class="banner">${esc(b)}</div>`).join("");
+  $("banner").innerHTML = alertBanners(d.alerts ?? []) + banners.map((b) => `<div class="banner">${esc(b)}</div>`).join("");
 
   $("kpis").innerHTML = [
     kpi("Ergebnis im Zeitraum", `<span class="${cls(result)}">${eurSmart(result)}</span>`, `Erlös − KI − Provision − Fixkosten (${eurSmart(fixed)})`, true),
@@ -404,6 +407,24 @@ function render() {
     d.unknownVatStorefronts.length ? `Ohne bekannten Steuersatz gerechnet (0 %): ${esc(d.unknownVatStorefronts.join(", "))}.` : "",
     `Genaue Einnahmen stehen in App Store Connect unter „Zahlungen und Finanzberichte“; Apple zahlt etwa 33 Tage nach Monatsende aus.`,
   ].filter(Boolean).map((n) => `<li>${n}</li>`).join("");
+}
+
+/** Störungen unabhängig vom Zeitraum: Google-Guthaben leer → rot (letzte 24 h) bzw. Hinweis (letzte 7 Tage). */
+function alertBanners(alerts) {
+  const when = (at) => new Date(at).toLocaleString("de-DE", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  return alerts.filter((a) => a.key === "google_402").map((a) => {
+    const hours = (Date.now() - Date.parse(a.last_at)) / 3_600_000;
+    if (hours < 24) {
+      return `<div class="banner alarm" role="alert"><strong>Google-Guthaben aufgebraucht</strong>
+        Seit ${esc(when(a.first_at))} scheitern neue Geschichten und die Stimme (${num(a.count)}× abgelehnt, zuletzt ${esc(when(a.last_at))}).
+        Jetzt in <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a> unter Billing Guthaben aufladen
+        und das automatische Nachbuchen prüfen (Monatslimit erreicht?).</div>`;
+    }
+    if (hours < 24 * 7) {
+      return `<div class="banner">Am ${esc(when(a.last_at))} war das Google-Guthaben leer (${num(a.count)} abgelehnte Anfragen). Auto-Reload und Monatslimit in AI Studio prüfen.</div>`;
+    }
+    return "";
+  }).join("");
 }
 
 function kpi(label, value, sub, hero = false) {
@@ -554,6 +575,10 @@ function demoData(from, to) {
       { label: "150–200 Min", subscriptions: 4, trials: 0 }, { label: "über 200 Min", subscriptions: 1, trials: 0 },
     ],
     unknownVatStorefronts: [],
+    // ?demo=402 zeigt die Warnung bei leerem Google-Guthaben.
+    alerts: new URLSearchParams(location.search).get("demo") === "402"
+      ? [{ key: "google_402", first_at: new Date(Date.now() - 50 * 60_000).toISOString(), last_at: new Date(Date.now() - 2 * 60_000).toISOString(), count: 37 }]
+      : [],
     firstStoreEvent: from,
     generatedAt: new Date().toISOString(),
   };
