@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Mondstunde Zahlen</title>
+<link rel="icon" href="/assets/favicon.png">
+<style>
+/* Interne Zahlen-Seite: nicht verlinkt, Daten nur mit Passwort (Funktion „dashboard“). Keine externen Dateien. */
+:root {
+  --night: #141B3C;
+  --night-deep: #0B1029;
+  --card: #1D2550;
+  --card-high: #2E3870;
+  --cream: #F4EEDC;
+  --mist: #A9B0D6;
+  --gold: #F5D77A;
+  --line: rgba(244, 238, 220, 0.10);
+  --text-cost: #8FB8FF;
+  --voice-cost: #C9A2F2;
+  --reserve: #F29E8E;
+  --pos: #8FD9A8;
+  --neg: #F29E8E;
+  --font: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --gutter: clamp(16px, 4vw, 32px);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--night-deep); color: var(--cream); font: 16px/1.5 var(--font); }
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, var(--night-deep) 0%, var(--night) 100%);
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) 64px; }
+header.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 20px 0 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; }
+.brand img { width: 30px; height: 30px; border-radius: 8px; }
+.brand small { color: var(--mist); font-weight: 600; }
+.meta { color: var(--mist); font-size: .85rem; }
+button, select, input { font: inherit; color: inherit; }
+.btn {
+  border: 1px solid var(--line); background: var(--card); color: var(--cream); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; font-size: .9rem; font-weight: 600;
+}
+.btn:hover { border-color: rgba(245, 215, 122, .45); }
+.btn:focus-visible, .seg button:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.btn.gold { background: var(--gold); color: var(--night-deep); border-color: var(--gold); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 8px 0 18px; }
+.seg { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 3px; flex-wrap: wrap; }
+.seg button {
+  border: 0; background: transparent; padding: 5px 12px; border-radius: 999px; cursor: pointer;
+  font-size: .88rem; font-weight: 600; color: var(--mist);
+}
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--night-deep); }
+.fixed { display: inline-flex; align-items: center; gap: 6px; color: var(--mist); font-size: .88rem; }
+.fixed input { width: 74px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 4px 8px; text-align: right; }
+.banner {
+  background: rgba(245, 215, 122, .12); border: 1px solid rgba(245, 215, 122, .35); color: var(--gold);
+  border-radius: 14px; padding: 10px 14px; margin: 0 0 16px; font-size: .92rem;
+}
+.banner.err { background: rgba(242, 158, 142, .12); border-color: rgba(242, 158, 142, .4); color: var(--neg); }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.kpi { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; min-width: 0; }
+.kpi .label { color: var(--mist); font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.kpi .value { font-size: 1.6rem; font-weight: 800; line-height: 1.2; margin-top: 4px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.kpi .sub { color: var(--mist); font-size: .85rem; margin-top: 4px; }
+.kpi.hero { background: linear-gradient(135deg, var(--card-high), var(--card)); border-color: rgba(245, 215, 122, .3); }
+.pos { color: var(--pos); }
+.neg { color: var(--neg); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; min-width: 0; margin-bottom: 12px; }
+.panel h2 { font-size: 1.02rem; margin: 0 0 2px; }
+.panel .hint { color: var(--mist); font-size: .84rem; margin: 0 0 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .82rem; color: var(--mist); margin-bottom: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { fill: var(--mist); font-size: 11px; font-family: var(--font); }
+.tip {
+  position: absolute; pointer-events: none; background: var(--night-deep); border: 1px solid var(--line);
+  border-radius: 10px; padding: 8px 10px; font-size: .8rem; white-space: nowrap; z-index: 2; display: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+}
+.tip b { display: block; margin-bottom: 2px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--mist); font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+.scroll { overflow-x: auto; }
+.bars { display: grid; gap: 8px; }
+.bar-row { display: grid; grid-template-columns: 110px 1fr 70px; gap: 10px; align-items: center; font-size: .88rem; }
+.bar-row .track { background: rgba(244, 238, 220, .06); border-radius: 6px; height: 14px; overflow: hidden; }
+.bar-row .fill { height: 100%; background: var(--voice-cost); border-radius: 6px; }
+.bar-row .n { text-align: right; color: var(--mist); font-variant-numeric: tabular-nums; }
+.notes { color: var(--mist); font-size: .84rem; }
+.notes li { margin: 4px 0; }
+.login { max-width: 420px; margin: 12vh auto 0; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; }
+.login h1 { font-size: 1.3rem; margin: 0 0 6px; }
+.login p { color: var(--mist); margin: 0 0 16px; font-size: .92rem; }
+.login input[type=password] {
+  width: 100%; background: var(--night-deep); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;
+}
+.login label.check { display: flex; gap: 8px; align-items: center; color: var(--mist); font-size: .9rem; margin-bottom: 14px; }
+.login .btn { width: 100%; padding: 10px; }
+.login .msg { color: var(--neg); font-size: .9rem; min-height: 1.4em; margin: 8px 0 0; }
+[hidden] { display: none !important; }
+@media (max-width: 900px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid2 { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .kpi .value { font-size: 1.3rem; } .bar-row { grid-template-columns: 92px 1fr 52px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="login" id="login" hidden>
+    <h1>Mondstunde · Zahlen</h1>
+    <p>Interne Übersicht über KI-Kosten und App Store-Einnahmen. Bitte das Dashboard-Passwort eingeben.</p>
+    <form id="loginForm">
+      <input type="password" id="password" autocomplete="current-password" placeholder="Passwort" aria-label="Passwort" required>
+      <label class="check"><input type="checkbox" id="remember" checked> Auf diesem Gerät merken</label>
+      <button class="btn gold" type="submit">Anzeigen</button>
+      <p class="msg" id="loginMsg" role="alert"></p>
+    </form>
+  </section>
+
+  <main id="app" hidden>
+    <header class="top">
+      <div class="brand"><img src="/assets/icon-180.png" alt=""> Mondstunde <small>Zahlen</small></div>
+      <div class="meta"><span id="updated"></span> · <button class="btn" id="reload" type="button">Aktualisieren</button> <button class="btn" id="logout" type="button">Abmelden</button></div>
+    </header>
+
+    <div class="controls">
+      <div class="seg" id="range" role="group" aria-label="Zeitraum">
+        <button type="button" data-v="7">7 Tage</button>
+        <button type="button" data-v="30" aria-pressed="true">30 Tage</button>
+        <button type="button" data-v="month">Dieser Monat</button>
+        <button type="button" data-v="lastmonth">Letzter Monat</button>
+        <button type="button" data-v="all">Seit Start</button>
+      </div>
+      <div class="seg" id="env" role="group" aria-label="Umgebung">
+        <button type="button" data-v="Production" aria-pressed="true">App Store</button>
+        <button type="button" data-v="Sandbox">TestFlight</button>
+      </div>
+      <label class="fixed" for="fixedCosts">Fixkosten <input id="fixedCosts" type="number" min="0" step="1" value="33"> € / Monat</label>
+    </div>
+
+    <div id="banner"></div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="panel">
+      <h2>Erlös und Kosten pro Tag</h2>
+      <p class="hint">Erlös nach Mehrwertsteuer und Apple-Anteil, Kosten = KI + Partner-Provision + Fixkosten anteilig.</p>
+      <div class="legend"><span><i style="background:var(--gold)"></i>Erlös</span><span><i style="background:var(--neg)"></i>Kosten</span></div>
+      <div class="chart" id="chartResult"></div>
+      <h2 style="margin-top:18px">Ergebnis aufsummiert</h2>
+      <p class="hint">Erlös minus Kosten seit Beginn des gewählten Zeitraums. Über der Nulllinie: im Plus.</p>
+      <div class="chart" id="chartCumulative"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h2>KI-Kosten pro Tag</h2>
+        <p class="hint">Text (Schreiben, Prüfen, Vorschläge) und Stimme; „Reserve“ = Flash-Stimme bei erreichtem Limit.</p>
+        <div class="legend"><span><i style="background:var(--text-cost)"></i>Text</span><span><i style="background:var(--voice-cost)"></i>Stimme Flash-Lite</span><span><i style="background:var(--reserve)"></i>Stimme Reserve</span></div>
+        <div class="chart" id="chartCosts"></div>
+      </div>
+      <div class="panel">
+        <h2>Neue Geschichten pro Tag</h2>
+        <p class="hint">Gratis-Geschichte im Onboarding, Gratiswoche und bezahlte Abos (inkl. Fortsetzungen).</p>
+        <div class="legend"><span><i style="background:var(--mist)"></i>Gratis</span><span><i style="background:var(--text-cost)"></i>Gratiswoche</span><span><i style="background:var(--gold)"></i>Abo</span></div>
+        <div class="chart" id="chartStories"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Abos</h2>
+      <p class="hint">Aktiv heute; Zahlungen und Erlös im gewählten Zeitraum.</p>
+      <div class="scroll"><table id="products"></table></div>
+    </div>
+    <div class="panel">
+      <h2>KI-Kosten nach Modell</h2>
+      <p class="hint">Im gewählten Zeitraum, umgerechnet zum aktuellen EZB-Kurs.</p>
+      <div class="scroll"><table id="models"></table></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h2>Vorlese-Minuten pro Abo</h2>
+        <p class="hint">Letzte 4 Wochen, alle Geräte eines Abos zusammen. Kontingent Familie 200, Basis 30 Minuten.</p>
+        <div class="bars" id="usage"></div>
+      </div>
+      <div class="panel">
+        <h2>Ereignisse</h2>
+        <p class="hint">Testphasen, Kündigungen, Erstattungen und Fehler im Zeitraum.</p>
+        <div class="scroll"><table id="events"></table></div>
+      </div>
+    </div>
+
+    <div class="panel notes">
+      <h2>So wird gerechnet</h2>
+      <ul id="notes"></ul>
+    </div>
+  </main>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+const API = "https://qjlkaladwatouucvfhaa.supabase.co/functions/v1/dashboard";
+const START = "2026-10-17";
+const KEY_STORE = "mondstunde.dashboard.key";
+const PREF_STORE = "mondstunde.dashboard.prefs";
+const DEMO = new URLSearchParams(location.search).has("demo");
+const PRODUCT_NAMES = {
+  "mondstunde.family.yearly": "Familie jährlich",
+  "mondstunde.family.monthly": "Familie monatlich",
+  "mondstunde.basic.yearly": "Basis jährlich",
+  "mondstunde.basic.monthly": "Basis monatlich",
+};
+
+const store = {
+  get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+  set(key, value) { try { localStorage.setItem(key, value); } catch { /* privat */ } },
+  remove(key) { try { localStorage.removeItem(key); } catch { /* privat */ } },
+};
+const prefs = (() => { try { return JSON.parse(store.get(PREF_STORE) ?? "{}"); } catch { return {}; } })();
+const state = { range: prefs.range ?? "30", env: prefs.env ?? "Production", fixed: prefs.fixed ?? 33, key: store.get(KEY_STORE) ?? "", data: null };
+const savePrefs = () => store.set(PREF_STORE, JSON.stringify({ range: state.range, env: state.env, fixed: state.fixed }));
+
+const $ = (id) => document.getElementById(id);
+const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const eur = (v, digits = 2) => (v ?? 0).toLocaleString("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: digits, maximumFractionDigits: digits });
+const eurSmart = (v) => (Math.abs(v) < 10 ? eur(v, 2) : eur(v, 0));
+const cents = (v) => (v * 100).toLocaleString("de-DE", { maximumFractionDigits: 2 }) + " ct";
+const num = (v, digits = 0) => (v ?? 0).toLocaleString("de-DE", { maximumFractionDigits: digits });
+const pct = (v) => (Number.isFinite(v) ? (v * 100).toLocaleString("de-DE", { maximumFractionDigits: 0 }) + " %" : "–");
+const cls = (v) => (v < 0 ? "neg" : "pos");
+const iso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+const short = (day) => `${day.slice(8, 10)}.${day.slice(5, 7)}.`;
+
+function period() {
+  const today = new Date();
+  const to = iso(today);
+  if (state.range === "month") return { from: iso(new Date(today.getFullYear(), today.getMonth(), 1)), to };
+  if (state.range === "lastmonth") {
+    return { from: iso(new Date(today.getFullYear(), today.getMonth() - 1, 1)), to: iso(new Date(today.getFullYear(), today.getMonth(), 0)) };
+  }
+  // Beispieldaten reichen auch vor den echten Start zurück, damit die Diagramme etwas zeigen.
+  if (state.range === "all") return { from: DEMO ? iso(new Date(today.getFullYear(), today.getMonth() - 2, today.getDate())) : START, to };
+  const from = new Date(today); from.setDate(from.getDate() - (Number(state.range) - 1));
+  const start = !DEMO && iso(from) < START ? START : iso(from);
+  return { from: start, to };
+}
+
+// ---------------------------------------------------------------------------------------------- Laden
+
+async function load() {
+  const { from, to } = period();
+  if (DEMO) { state.data = demoData(from, to); render(); return; }
+  $("updated").textContent = "lädt …";
+  let response;
+  try {
+    response = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-dashboard-key": state.key },
+      body: JSON.stringify({ from, to, environment: state.env }),
+    });
+  } catch {
+    return showError("Server nicht erreichbar. Internetverbindung prüfen und erneut versuchen.");
+  }
+  if (response.status === 401) { store.remove(KEY_STORE); state.key = ""; return showLogin("Passwort falsch."); }
+  if (response.status === 503) return showLogin("Das Dashboard ist noch nicht eingerichtet: Beim Server fehlt das Passwort (Secret DASHBOARD_PASSWORD).");
+  if (!response.ok) return showError(`Fehler beim Laden (HTTP ${response.status}).`);
+  state.data = await response.json();
+  render();
+}
+
+function showLogin(message = "") {
+  $("app").hidden = true;
+  $("login").hidden = false;
+  $("loginMsg").textContent = message;
+  $("password").focus();
+}
+
+function showError(message) {
+  if (!state.data) return showLogin(message);
+  $("banner").innerHTML = `<div class="banner err">${esc(message)}</div>`;
+  $("updated").textContent = "";
+}
+
+// ---------------------------------------------------------------------------------------------- Anzeige
+
+function render() {
+  const d = state.data;
+  $("login").hidden = true;
+  $("app").hidden = false;
+  document.querySelectorAll("#range button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state.range)));
+  document.querySelectorAll("#env button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state.env)));
+  if (document.activeElement !== $("fixedCosts")) $("fixedCosts").value = state.fixed;
+  $("updated").textContent = `Stand ${new Date(d.generatedAt).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })}`;
+
+  const t = d.totals;
+  const fixedPerDay = state.fixed / 30.4;
+  const fixed = fixedPerDay * d.period.days;
+  const ai = t.textEUR + t.voiceEUR;
+  const revenue = t.revenueEUR - t.refundEUR;
+  const result = revenue - ai - t.commissionEUR - fixed;
+  const active = Object.values(d.active).reduce((s, a) => ({ paid: s.paid + a.paid, trial: s.trial + a.trial, shared: s.shared + a.familyShared }), { paid: 0, trial: 0, shared: 0 });
+  const perStory = t.stories > 0 ? ai / t.stories : 0;
+  const reserveShare = t.voiceEUR > 0 ? t.voiceReserveEUR / t.voiceEUR : 0;
+  const coverage = state.fixed > 0 ? d.mrrEUR / state.fixed : NaN;
+
+  const banners = [];
+  if (DEMO) banners.push("Beispieldaten zur Ansicht – keine echten Zahlen.");
+  if (d.period.environment === "Sandbox") banners.push("TestFlight-Ansicht: Käufe aus der Sandbox (kein echtes Geld). KI-Kosten sind immer echt und für alle Umgebungen zusammen.");
+  if (!d.firstStoreEvent && !DEMO) banners.push("Noch keine App Store-Mitteilungen in dieser Umgebung – Erlös und Abos erscheinen mit dem ersten Kauf.");
+  if (t.voiceEUR > 0 && reserveShare > 0.1) banners.push(`Achtung: ${pct(reserveShare)} der Stimmkosten liefen über die teurere Reserve-Stimme (Limit bei Flash-Lite erreicht).`);
+  $("banner").innerHTML = banners.map((b) => `<div class="banner">${esc(b)}</div>`).join("");
+
+  $("kpis").innerHTML = [
+    kpi("Ergebnis im Zeitraum", `<span class="${cls(result)}">${eurSmart(result)}</span>`, `Erlös − KI − Provision − Fixkosten (${eurSmart(fixed)})`, true),
+    kpi("Erlös (geschätzt)", eurSmart(revenue), `nach MwSt und 15 % Apple${t.refundEUR ? ` · Erstattungen −${eurSmart(t.refundEUR)}` : ""}`),
+    kpi("KI-Kosten", eurSmart(ai), `Text ${eurSmart(t.textEUR)} · Stimme ${eurSmart(t.voiceEUR)}`),
+    kpi("Wiederkehrend / Monat", eurSmart(d.mrrEUR), Number.isFinite(coverage) ? `deckt Fixkosten zu ${pct(coverage)}` : "aus aktiven Abos"),
+    kpi("Aktive Abos", num(active.paid), `+ ${num(active.trial)} in Gratiswoche${active.shared ? ` · ${num(active.shared)} geteilt` : ""}`),
+    kpi("Gratiswoche → Abo", `${num(t.conversions)} / ${num(t.trials)}`, `${t.trials ? pct(t.conversions / t.trials) : "–"} umgewandelt · ${num(t.trialsViaCode)} über Code`),
+    kpi("Neue Geschichten", num(t.stories), `${num(t.storiesFree)} gratis · ${num(t.storiesTrial)} Gratiswoche · ${num(t.storiesPaid)} Abo`),
+    kpi("KI-Kosten pro Geschichte", t.stories ? cents(perStory) : "–", `${num(t.voiceMinutes)} Min vorgelesen${t.commissionEUR ? ` · Provision ${eurSmart(t.commissionEUR)}` : ""}`),
+  ].join("");
+
+  let cumulative = 0;
+  const days = d.series.map((s) => {
+    const cost = s.textEUR + s.voiceEUR + s.commissionEUR + fixedPerDay;
+    const rev = s.revenueEUR - s.refundEUR;
+    cumulative += rev - cost;
+    return { ...s, cost, rev, cumulative };
+  });
+  barChart($("chartResult"), days, [
+    { key: "rev", color: "var(--gold)", label: "Erlös" },
+    { key: "cost", color: "var(--neg)", label: "Kosten" },
+  ], { grouped: true, format: eurSmart });
+  barChart($("chartCumulative"), days, [], { line: { key: "cumulative", color: "var(--pos)", label: "Ergebnis aufsummiert" }, area: true, height: 170, format: eurSmart });
+  barChart($("chartCosts"), days.map((s) => ({ ...s, lite: s.voiceEUR - s.voiceReserveEUR })), [
+    { key: "textEUR", color: "var(--text-cost)", label: "Text" },
+    { key: "lite", color: "var(--voice-cost)", label: "Stimme Flash-Lite" },
+    { key: "voiceReserveEUR", color: "var(--reserve)", label: "Stimme Reserve" },
+  ], { format: (v) => eur(v, v < 1 ? 3 : 2) });
+  barChart($("chartStories"), days, [
+    { key: "storiesFree", color: "var(--mist)", label: "Gratis" },
+    { key: "storiesTrial", color: "var(--text-cost)", label: "Gratiswoche" },
+    { key: "storiesPaid", color: "var(--gold)", label: "Abo" },
+  ], { format: (v) => num(v) });
+
+  const products = Object.keys(PRODUCT_NAMES).map((id) => {
+    const a = d.active[id] ?? { paid: 0, trial: 0, familyShared: 0 };
+    const p = d.products[id] ?? { payments: 0, revenueEUR: 0 };
+    return `<tr><td>${PRODUCT_NAMES[id]}</td><td>${num(a.paid)}</td><td>${num(a.trial)}</td><td>${num(a.familyShared)}</td><td>${num(p.payments)}</td><td>${eurSmart(p.revenueEUR)}</td></tr>`;
+  });
+  $("products").innerHTML = `<thead><tr><th>Abo</th><th>Zahlend</th><th>Gratiswoche</th><th>Geteilt</th><th>Zahlungen</th><th>Erlös</th></tr></thead><tbody>${products.join("")}</tbody>`;
+
+  const modelRows = d.models.map((m) => {
+    const amount = m.kind === "voice" ? `${num(m.audioMinutes, 1)} Min` : `${num((m.tokensIn + m.tokensOut) / 1000, 0)} Tsd. Tokens`;
+    return `<tr><td>${esc(m.model)}${m.kind === "voice" && !m.model.includes("lite") ? " (Reserve)" : ""}</td><td>${m.kind === "voice" ? "Stimme" : "Text"}</td><td>${num(m.requests)}</td><td>${amount}</td><td>${eur(m.costEUR, m.costEUR < 1 ? 3 : 2)}</td><td>${pct(ai ? m.costEUR / ai : 0)}</td></tr>`;
+  });
+  $("models").innerHTML = `<thead><tr><th>Modell</th><th>Art</th><th>Anfragen</th><th>Menge</th><th>Kosten</th><th>Anteil</th></tr></thead><tbody>${
+    modelRows.join("") || `<tr><td colspan="6">Noch keine Daten im Zeitraum.</td></tr>`}</tbody>`;
+
+  const maxBucket = Math.max(1, ...d.usageBuckets.map((b) => b.subscriptions));
+  $("usage").innerHTML = d.usageBuckets.map((b) => `<div class="bar-row"><span>${esc(b.label)}</span>
+    <div class="track" role="img" aria-label="${esc(b.label)}: ${b.subscriptions} Abos"><div class="fill" style="width:${(b.subscriptions / maxBucket) * 100}%"></div></div>
+    <span class="n">${num(b.subscriptions)}${b.trials ? ` (${num(b.trials)} G)` : ""}</span></div>`).join("") +
+    `<p class="hint" style="margin:8px 0 0">(G) = davon in der Gratiswoche. Ein Limit für die Gratiswoche lohnt sich erst, wenn dort viele über 50 Minuten liegen.</p>`;
+
+  const ev = d.events;
+  const errorCount = Object.values(d.errors).reduce((s, n) => s + n, 0);
+  const rows = [
+    ["Neue Gratiswochen", t.trials],
+    ["davon über Partner-Code", t.trialsViaCode],
+    ["Gratiswoche → Abo", t.conversions],
+    ["Automatische Verlängerung abgeschaltet", ev["DID_CHANGE_RENEWAL_STATUS/AUTO_RENEW_DISABLED"] ?? 0],
+    ["Verlängerung wieder eingeschaltet", ev["DID_CHANGE_RENEWAL_STATUS/AUTO_RENEW_ENABLED"] ?? 0],
+    ["Abgelaufen", Object.entries(ev).filter(([k]) => k.startsWith("EXPIRED")).reduce((s, [, n]) => s + n, 0)],
+    ["Zahlungsproblem bei Verlängerung", Object.entries(ev).filter(([k]) => k.startsWith("DID_FAIL_TO_RENEW")).reduce((s, [, n]) => s + n, 0)],
+    ["Erstattungen", ev["REFUND"] ?? 0],
+    ["Vorschläge für Teil 2", t.directions],
+    ["Fehler beim Erstellen/Vorlesen", errorCount],
+  ];
+  const errorDetail = Object.entries(d.errors).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${esc(k)}: ${num(n)}`).join(", ");
+  $("events").innerHTML = `<tbody>${rows.map(([label, n]) => `<tr><td>${label}</td><td>${num(n)}</td></tr>`).join("")}</tbody>` +
+    (errorDetail ? `<caption style="caption-side:bottom;text-align:left;color:var(--mist);font-size:.8rem;padding-top:6px">${errorDetail}</caption>` : "");
+
+  $("notes").innerHTML = [
+    `Erlös = Apples Preis ohne Mehrwertsteuer des jeweiligen Landes, minus 15 % Apple (Small Business Program). Datum = Abbuchung; Jahresabos zählen am Tag der Zahlung voll. „Wiederkehrend / Monat“ verteilt sie auf 12 Monate.`,
+    `Währungen und KI-Kosten (US-Dollar) umgerechnet mit ${esc(d.fx.source)} (1 € = ${num(d.fx.usdPerEUR, 4)} $).`,
+    `KI-Kosten werden pro Aufruf aus den Tokens berechnet (Preise bis Ende 2026). Einmal im Monat mit der Google-Rechnung abgleichen.`,
+    `Partner-Provision laut Vertrag je bezahlter Abrechnung im ersten Jahr nach Einlösung des Codes.`,
+    `Fixkosten anteilig: ${eur(state.fixed)} pro Monat (oben einstellbar).`,
+    d.unknownVatStorefronts.length ? `Ohne bekannten Steuersatz gerechnet (0 %): ${esc(d.unknownVatStorefronts.join(", "))}.` : "",
+    `Genaue Einnahmen stehen in App Store Connect unter „Zahlungen und Finanzberichte“; Apple zahlt etwa 33 Tage nach Monatsende aus.`,
+  ].filter(Boolean).map((n) => `<li>${n}</li>`).join("");
+}
+
+function kpi(label, value, sub, hero = false) {
+  return `<div class="kpi${hero ? " hero" : ""}"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
+}
+
+// ---------------------------------------------------------------------------------------------- Diagramme
+
+/** Säulen pro Tag (gestapelt oder nebeneinander), optional mit Linie; Tooltip beim Zeigen oder Antippen. */
+function barChart(container, days, series, options = {}) {
+  // Breite = tatsächliche Breite, damit die Schrift in jedem Diagramm gleich groß bleibt.
+  const W = Math.max(260, Math.round(container.clientWidth) || 640), H = options.height ?? 220, L = 52, R = 8, T = 10, B = 26;
+  const plotW = W - L - R, plotH = H - T - B;
+  const values = days.flatMap((d) => {
+    const bars = options.grouped ? series.map((s) => d[s.key] ?? 0) : [series.reduce((sum, s) => sum + Math.max(0, d[s.key] ?? 0), 0)];
+    return options.line ? [...bars, d[options.line.key] ?? 0] : bars;
+  });
+  let max = Math.max(0, ...values), min = Math.min(0, ...values);
+  if (max === min) max = min + 1;
+  const ticks = niceTicks(min, max);
+  min = ticks[0]; max = ticks.at(-1);
+  const y = (v) => T + plotH - ((v - min) / (max - min)) * plotH;
+  const band = plotW / Math.max(1, days.length);
+  const barW = Math.max(2, Math.min(28, band * 0.7));
+  const fmt = options.format ?? ((v) => num(v, 2));
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(series.map((s) => s.label).join(", "))} pro Tag">`;
+  for (const tick of ticks) {
+    svg += `<line x1="${L}" x2="${W - R}" y1="${y(tick)}" y2="${y(tick)}" stroke="rgba(244,238,220,${tick === 0 ? 0.25 : 0.08})"/>`;
+    svg += `<text x="${L - 6}" y="${y(tick) + 4}" text-anchor="end">${esc(fmt(tick))}</text>`;
+  }
+  const labelEvery = Math.ceil(days.length / Math.max(3, Math.floor(plotW / 70)));
+  days.forEach((d, i) => {
+    const x0 = L + i * band + (band - barW) / 2;
+    if (options.grouped) {
+      const w = barW / series.length;
+      series.forEach((s, k) => {
+        const v = d[s.key] ?? 0;
+        svg += `<rect x="${x0 + k * w}" y="${Math.min(y(v), y(0))}" width="${Math.max(1, w - 1)}" height="${Math.abs(y(v) - y(0))}" rx="2" fill="${s.color}"/>`;
+      });
+    } else {
+      let acc = 0;
+      for (const s of series) {
+        const v = Math.max(0, d[s.key] ?? 0);
+        if (v > 0) svg += `<rect x="${x0}" y="${y(acc + v)}" width="${barW}" height="${y(acc) - y(acc + v)}" fill="${s.color}"/>`;
+        acc += v;
+      }
+    }
+    if (i % labelEvery === 0) svg += `<text x="${L + i * band + band / 2}" y="${H - 8}" text-anchor="middle">${short(d.day)}</text>`;
+  });
+  if (options.line) {
+    const points = days.map((d, i) => `${L + i * band + band / 2},${y(d[options.line.key] ?? 0)}`).join(" ");
+    if (options.area && days.length) {
+      const first = L + band / 2, last = L + (days.length - 1) * band + band / 2;
+      svg += `<polygon points="${first},${y(0)} ${points} ${last},${y(0)}" fill="${options.line.color}" opacity="0.14"/>`;
+    }
+    svg += `<polyline points="${points}" fill="none" stroke="${options.line.color}" stroke-width="2" stroke-linejoin="round"/>`;
+  }
+  days.forEach((d, i) => { svg += `<rect class="hit" data-i="${i}" x="${L + i * band}" y="${T}" width="${band}" height="${plotH}" fill="transparent"/>`; });
+  svg += "</svg>";
+  container.innerHTML = svg;
+
+  const tip = $("tip");
+  const show = (event) => {
+    const i = Number(event.target.dataset?.i);
+    if (!Number.isInteger(i)) return;
+    const d = days[i];
+    const lines = series.map((s) => `${s.label}: ${fmt(d[s.key] ?? 0)}`);
+    if (options.line) lines.push(`${options.line.label}: ${fmt(d[options.line.key] ?? 0)}`);
+    tip.innerHTML = `<b>${new Date(d.day + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "short" })}</b>${lines.map(esc).join("<br>")}`;
+    tip.style.display = "block";
+    const box = event.target.getBoundingClientRect();
+    const left = Math.min(window.scrollX + box.left + box.width / 2 + 8, window.scrollX + document.documentElement.clientWidth - tip.offsetWidth - 8);
+    tip.style.left = `${Math.max(8, left)}px`;
+    tip.style.top = `${window.scrollY + box.top + 4}px`;
+  };
+  container.querySelectorAll(".hit").forEach((rect) => {
+    rect.addEventListener("pointerenter", show);
+    rect.addEventListener("click", show);
+  });
+  container.addEventListener("pointerleave", () => { tip.style.display = "none"; });
+}
+
+function niceTicks(min, max) {
+  const span = max - min;
+  const step0 = span / 4;
+  const magnitude = 10 ** Math.floor(Math.log10(step0));
+  const step = [1, 2, 2.5, 5, 10].map((m) => m * magnitude).find((s) => s >= step0) ?? step0;
+  const start = Math.floor(min / step) * step;
+  const ticks = [];
+  for (let v = start; v <= max + step * 0.001; v += step) ticks.push(Math.round(v / step) * step);
+  if (ticks.at(-1) < max) ticks.push(ticks.at(-1) + step);
+  return ticks;
+}
+
+// ---------------------------------------------------------------------------------------------- Beispieldaten
+
+/** Nur für ?demo: plausible Zahlen eines Starts, damit man die Seite ohne Passwort ansehen kann. */
+function demoData(from, to) {
+  const series = [];
+  let seed = 7;
+  const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let t = new Date(from + "T12:00:00"); iso(t) <= to; t.setDate(t.getDate() + 1)) {
+    const i = series.length, growth = Math.min(1, (i + 3) / 25);
+    const free = Math.round(20 * growth * (0.7 + rand() * 0.6)), trial = Math.round(30 * growth * (0.6 + rand() * 0.6)), paid = Math.round(45 * growth * growth * (0.7 + rand() * 0.6));
+    const minutes = (trial + paid) * 4.5 + free * 3;
+    const voice = minutes * 0.0089 / 1.13, text = (free + trial + paid) * 0.005 / 1.13;
+    const trials = Math.round(6 * growth * (0.5 + rand())), conversions = i > 7 ? Math.round(trials * 0.45 * rand() * 1.6) : 0;
+    const yearly = Math.round(conversions * 0.55), monthly = conversions - yearly;
+    series.push({
+      day: iso(t), textEUR: text, voiceEUR: voice, voiceReserveEUR: rand() < 0.1 ? voice * 0.2 : 0,
+      revenueEUR: yearly * 85.71 + monthly * 9.99 + Math.round(paid / 30) * 9.99, refundEUR: rand() < 0.05 ? 9.99 : 0,
+      commissionEUR: conversions ? 2 * rand() : 0, stories: free + trial + paid, storiesFree: free, storiesTrial: trial,
+      storiesPaid: paid, voiceMinutes: minutes, trials, trialsViaCode: Math.round(trials * 0.2), conversions, cancellations: Math.round(rand() * 1.2),
+    });
+  }
+  const sum = (k) => series.reduce((s, d) => s + d[k], 0);
+  const totals = Object.fromEntries(["textEUR", "voiceEUR", "voiceReserveEUR", "revenueEUR", "refundEUR", "commissionEUR", "stories", "storiesFree", "storiesTrial", "storiesPaid", "voiceMinutes", "trials", "trialsViaCode", "conversions", "cancellations"].map((k) => [k, sum(k)]));
+  totals.directions = Math.round(totals.storiesPaid * 0.3);
+  return {
+    period: { from, to, environment: state.env, days: series.length },
+    fx: { source: "Beispielkurs", usdPerEUR: 1.13 },
+    totals, series,
+    models: [
+      { kind: "voice", model: "gemini-3.8-flash-lite-tts", requests: Math.round(totals.voiceMinutes / 2), tokensIn: 0, tokensOut: 0, audioMinutes: totals.voiceMinutes, costEUR: totals.voiceEUR - totals.voiceReserveEUR },
+      { kind: "text", model: "gemini-3.8-flash", requests: totals.stories, tokensIn: totals.stories * 1300, tokensOut: totals.stories * 1100, audioMinutes: 0, costEUR: totals.textEUR * 0.9 },
+      { kind: "voice", model: "gemini-3.8-flash-tts", requests: 12, tokensIn: 0, tokensOut: 0, audioMinutes: 20, costEUR: totals.voiceReserveEUR },
+      { kind: "text", model: "gemini-3.5-flash-lite", requests: totals.stories + totals.directions, tokensIn: totals.stories * 650, tokensOut: totals.stories * 20, audioMinutes: 0, costEUR: totals.textEUR * 0.1 },
+    ],
+    products: {
+      "mondstunde.family.yearly": { payments: Math.round(totals.conversions * 0.45), revenueEUR: Math.round(totals.conversions * 0.45) * 85.71 },
+      "mondstunde.family.monthly": { payments: Math.round(totals.conversions * 0.3), revenueEUR: Math.round(totals.conversions * 0.3) * 9.99 },
+      "mondstunde.basic.yearly": { payments: Math.round(totals.conversions * 0.1), revenueEUR: Math.round(totals.conversions * 0.1) * 42.86 },
+      "mondstunde.basic.monthly": { payments: Math.round(totals.conversions * 0.15), revenueEUR: Math.round(totals.conversions * 0.15) * 4.99 },
+    },
+    active: {
+      "mondstunde.family.yearly": { paid: 38, trial: 9, familyShared: 6 },
+      "mondstunde.family.monthly": { paid: 24, trial: 7, familyShared: 3 },
+      "mondstunde.basic.yearly": { paid: 8, trial: 2, familyShared: 0 },
+      "mondstunde.basic.monthly": { paid: 13, trial: 3, familyShared: 0 },
+    },
+    mrrEUR: 38 * 7.14 + 24 * 9.99 + 8 * 3.57 + 13 * 4.99,
+    events: { "DID_CHANGE_RENEWAL_STATUS/AUTO_RENEW_DISABLED": totals.cancellations, "EXPIRED/VOLUNTARY": 4, "REFUND": 2, "DID_FAIL_TO_RENEW": 1 },
+    errors: { "create:refused": 3, "speak:quota_exceeded": 5 },
+    usageBuckets: [
+      { label: "unter 25 Min", subscriptions: 31, trials: 12 }, { label: "25–50 Min", subscriptions: 22, trials: 6 },
+      { label: "50–100 Min", subscriptions: 19, trials: 3 }, { label: "100–150 Min", subscriptions: 8, trials: 0 },
+      { label: "150–200 Min", subscriptions: 4, trials: 0 }, { label: "über 200 Min", subscriptions: 1, trials: 0 },
+    ],
+    unknownVatStorefronts: [],
+    firstStoreEvent: from,
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+// ---------------------------------------------------------------------------------------------- Bedienung
+
+$("loginForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  state.key = $("password").value;
+  if ($("remember").checked) store.set(KEY_STORE, state.key); else store.remove(KEY_STORE);
+  $("password").value = "";
+  $("loginMsg").textContent = "";
+  load();
+});
+$("logout").addEventListener("click", () => { store.remove(KEY_STORE); state.key = ""; state.data = null; showLogin(); });
+$("reload").addEventListener("click", () => load());
+for (const id of ["range", "env"]) {
+  $(id).addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    state[id] = button.dataset.v;
+    savePrefs();
+    load();
+  });
+}
+$("fixedCosts").addEventListener("input", () => {
+  const value = parseFloat($("fixedCosts").value);
+  state.fixed = Number.isFinite(value) && value >= 0 ? value : 0;
+  savePrefs();
+  if (state.data) render();
+});
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (state.data && !$("app").hidden) render(); }, 150);
+});
+
+if (DEMO || state.key) load(); else showLogin();
+</script>
+</body>
+</html>
