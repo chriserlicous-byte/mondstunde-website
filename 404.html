@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<script>
+(function () {
+  var lang = "de", titles = {"de": "Seite nicht gefunden – Mondstunde", "en": "Page not found – Mondstunde"};
+  try {
+    if (location.pathname.indexOf("/en/") === 0 || location.pathname === "/en") lang = "en";
+    else {
+      var pref = null;
+      try { pref = localStorage.getItem("lang"); } catch (e) {}
+      if (pref === "de" || pref === "en") lang = pref;
+      else {
+        var first = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+        lang = /^de(-|$)/i.test(first) ? "de" : "en";
+      }
+    }
+  } catch (e) {}
+  var root = document.documentElement;
+  root.lang = lang;
+  root.classList.add("js", "nf-" + lang);
+  document.title = titles[lang];
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seite nicht gefunden · Page not found – Mondstunde</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B1029">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="stylesheet" href="/assets/site.css?v=52395fd7">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/"><img src="/assets/zeichen.png" alt="" width="34" height="34">Mondstunde</a>
+  </div>
+</header>
+<main class="wrap nf">
+  <div class="nf-moon" aria-hidden="true"><img src="/assets/zeichen.png" alt="" width="132" height="132"><span>z</span><span>z</span><span>z</span></div>
+  <div class="nf-text" lang="de" data-nf="de"><p class="eyebrow">Fehler 404</p><h1>Diese Seite schläft schon</h1><p class="lead">Die Seite, die du suchst, gibt es nicht. Vielleicht hat sich ein Tippfehler in die Adresse geschlichen, oder der Link ist nicht mehr aktuell.</p><div class="cta-row"><a class="store" href="/">Zur Startseite</a><a class="listen" href="/#hoerprobe"><span class="listen-icon" aria-hidden="true"></span>Beispiel anhören</a></div><p class="nf-help"><a href="/support/">Hilfe</a></p></div><div class="nf-text" lang="en" data-nf="en"><p class="eyebrow">Error 404</p><h2 class="nf-h">This page is already asleep</h2><p class="lead">The page you're looking for doesn't exist. Maybe there's a typo in the address, or the link is out of date.</p><div class="cta-row"><a class="store" href="/en/">Go to the homepage</a><a class="listen" href="/en/#listen"><span class="listen-icon" aria-hidden="true"></span>Listen to a sample</a></div><p class="nf-help"><a href="/en/support/">Help</a></p></div>
+</main>
+</body>
+</html>
