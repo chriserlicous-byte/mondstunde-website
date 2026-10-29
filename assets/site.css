@@ -168,6 +168,7 @@ h2 { font-size: clamp(28px, 4vw, 42px); line-height: 1.12; letter-spacing: -0.02
 .price { font-size: clamp(36px, 4.4vw, 44px); font-weight: 800; letter-spacing: -0.02em; margin: 14px 0 0; font-variant-numeric: tabular-nums; line-height: 1.1; }
 .price small { font-size: 16px; font-weight: 600; color: var(--mist); letter-spacing: 0; }
 .yearly { color: var(--mist); font-size: 15px; margin: 6px 0 0; }
+.monthly { color: var(--mist); font-size: 13px; margin: 2px 0 0; }
 .checks { list-style: none; padding: 20px 0 0; margin: 20px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; }
 .checks li { position: relative; padding-left: 30px; }
 .checks li::before {
