@@ -98,38 +98,10 @@ p { text-wrap: pretty; }
   pointer-events: none;
 }
 
-/* iPhone-Rahmen (Maße des iPhone 18 Pro Max). Alle Maße relativ zur Breite des Rahmens (cqw),
-   so passt er in jede Spalte: schmaler schwarzer Rand, Titankante, Dynamic Island und Seitentasten. */
-.phone { container-type: inline-size; position: relative; width: 100%; }
-.phone .screen {
-  position: relative;
-  padding: 3.4cqw;
-  border-radius: 17cqw;
-  background: #07080c;
-  box-shadow:
-    0 0 0 0.8cqw #4a4f5c,
-    0 0 0 1.4cqw #1a1d24,
-    0 10cqw 22cqw rgba(0, 0, 0, 0.55);
-}
-.phone img { width: 100%; border-radius: 13.6cqw; }
-.phone .screen::before {
-  content: "";
-  position: absolute;
-  top: 5.7cqw;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 26.7cqw;
-  height: 7.8cqw;
-  border-radius: 999px;
-  background: #000;
-}
-.phone .btn { position: absolute; width: 1.4cqw; background: #4a4f5c; }
-.phone .action, .phone .vol-up, .phone .vol-down { left: -2.6cqw; border-radius: 2px 0 0 2px; }
-.phone .side { right: -2.6cqw; border-radius: 0 2px 2px 0; }
-.phone .action { top: 18%; height: 4.5%; }
-.phone .vol-up { top: 26%; height: 8%; }
-.phone .vol-down { top: 36%; height: 8%; }
-.phone .side { top: 29%; height: 13%; }
+/* iPhone-Rahmen: Apples offizieller Rahmen „iPhone 18 Pro Max – Silver“ ist ins Bild eingerechnet
+   (WebsiteSource/tools/make_device_images.sh). Hier nur Größe und Schatten. */
+.phone { margin: 0; width: 100%; filter: drop-shadow(0 24px 44px rgba(0, 0, 0, 0.55)); }
+.phone img { display: block; width: 100%; height: auto; }
 
 /* Abschnitte */
 .block { padding-block: clamp(40px, 6vw, 72px); }
