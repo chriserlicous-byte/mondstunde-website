@@ -63,7 +63,7 @@
     <ul>
       <li>You <strong>don't need an account</strong>. The app signs in with a random, anonymous ID.</li>
       <li>For a story we only send your child's <strong>first name, age and form of address</strong>, the options you chose and the names of other characters. For reading aloud, the text of the story is added.</li>
-      <li>Stories and audio are stored <strong>only on your device</strong>, not on our servers.</li>
+      <li>Stories and profiles are stored <strong>on your device and (from version 1.1) in your private iCloud</strong>, audio only on your device. They are not stored on our servers, and we have no access to them.</li>
       <li>The AI (Google Gemini) does <strong>not use your input for training</strong>.</li>
       <li>Anonymous usage statistics are collected <strong>only with your consent</strong>. You can turn them off in Settings at any time.</li>
       <li>No ads, no tracking across other apps, no selling of data.</li>
@@ -149,12 +149,28 @@
   </p>
   <p class="muted">Legal basis: Art. 6(1)(b) and (f) GDPR.</p>
 
-  <h2>7. Data on your device</h2>
+  <h2>7. Data on your device and in your iCloud</h2>
   <p>
-    Child profiles, stories, favorites, voiced audio and your settings are stored only in the app on your device.
-    They are included in your device backup (e.g. iCloud Backup) if you use it. Deleting the app removes them.
-    If you enter your child's birthday, it also stays only on your device: the app uses it to work out the age and
-    to say happy birthday on the day. Only the age is sent to our server, never the date of birth.
+    Child profiles, stories, favorites, voiced audio and your settings are stored in the app on your device.
+    They are included in your device backup (e.g. iCloud Backup) if you use it.
+  </p>
+  <p>
+    From version 1.1, the app also syncs child profiles, stories and favorites, plus a few settings (favorite voice,
+    reading mode, font size), through Apple's iCloud (CloudKit) if you are signed in to iCloud with your Apple Account
+    on the device. The data is then stored in your private iCloud storage, not with us: we have no access to it, and
+    it counts towards your iCloud storage. This way it comes back on a new iPhone or after reinstalling the app, and it
+    appears on your other devices with the same Apple Account. Voiced audio is not synced; it stays on the device where
+    it was created. Apple's privacy policy applies to iCloud. You can turn syncing off in iOS Settings under your
+    name → iCloud; without iCloud, the data stays only on your device and is removed when you delete the app.
+  </p>
+  <p>
+    If you enter your child's birthday, it is stored with the child profile on your device and in your iCloud. The app
+    uses it to work out the age and to say happy birthday on the day. Only the age is sent to our server, never the
+    date of birth.
+  </p>
+  <p>
+    "Delete all data" in Settings removes the data on the device and in your iCloud, and therefore also on your other
+    devices with the same Apple Account.
   </p>
   <p>The bedtime reminder is a local notification on your device. No data is sent to us for it.</p>
   <p>
@@ -230,7 +246,7 @@
         <tr><td>Google (Gemini API)</td><td>AI for text and voice (Gemini)</td><td>EU and other countries where Google operates data centers</td></tr>
         <tr><td>TelemetryDeck GmbH (Germany)</td><td>Anonymous usage statistics, only with consent</td><td>EU</td></tr>
         <tr><td>GitHub, Inc. (USA)</td><td>Hosting this website (GitHub Pages)</td><td>USA and other countries</td></tr>
-        <tr><td>Apple (App Store)</td><td>Download, subscriptions, payment</td><td>see Apple's privacy policy</td></tr>
+        <tr><td>Apple (App Store, iCloud)</td><td>Download, subscriptions, payment; sync via your private iCloud (from version 1.1)</td><td>see Apple's privacy policy</td></tr>
         <tr><td>INWX GmbH (Germany)</td><td>Receiving and forwarding email, domain</td><td>Germany</td></tr>
         <tr><td>Google (Gmail)</td><td>Email mailbox</td><td>EU and other countries where Google operates data centers</td></tr>
       </tbody>
@@ -264,6 +280,7 @@
         <tr><td>App Store notifications for analysis (type, product, price, country, transaction numbers)</td><td>2 years, then deleted automatically</td></tr>
         <tr><td>Messages from the contact form</td><td>2 years after they arrive, then deleted automatically</td></tr>
         <tr><td>Stories, audio and profiles on your device</td><td>until you delete them or the app</td></tr>
+        <tr><td>Stories, profiles, favorites and settings in your iCloud (from version 1.1)</td><td>until you delete them in the app or with "Delete all data", or remove them in your iCloud settings</td></tr>
         <tr><td>Usage statistics (TelemetryDeck)</td><td>anonymous, per TelemetryDeck's retention periods</td></tr>
       </tbody>
     </table>
@@ -279,7 +296,7 @@
     <li>withdraw consent with effect for the future (Art. 7(3) GDPR).</li>
   </ul>
   <p>
-    Since we don't know you by name, most data is stored only on your device, where you can delete it at any time.
+    Since we don't know you by name, most data is stored only on your device and in your iCloud, where you can delete it at any time.
     For questions and requests, write to <a href="mailto:datenschutz@mondstunde.com">datenschutz@mondstunde.com</a>.
   </p>
   <p>
