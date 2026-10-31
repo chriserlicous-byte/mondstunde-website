@@ -63,7 +63,7 @@
     <ul>
       <li>You <strong>don't need an account</strong>. The app signs in with a random, anonymous ID.</li>
       <li>For a story we only send your child's <strong>first name, age and form of address</strong>, the options you chose, the names of other characters (with their role) and the favorite things you entered. For reading aloud, the text of the story is added.</li>
-      <li>Stories and profiles are stored <strong>on your device and in your private iCloud</strong>, audio only on your device. They are not stored on our servers, and we have no access to them.</li>
+      <li>Stories, profiles and read-aloud audio are stored <strong>on your device and in your private iCloud</strong>. They are not stored on our servers, and we have no access to them.</li>
       <li>The AI (Google Gemini) does <strong>not use your input for training</strong>.</li>
       <li>Anonymous usage statistics are collected <strong>only with your consent</strong>. You can turn them off in Settings at any time.</li>
       <li>No ads, no tracking across other apps, no selling of data.</li>
@@ -137,20 +137,23 @@
   <p>
     To read a story aloud with the AI voice, the app sends the text of the story section by section via our server
     to Google Gemini, together with the chosen voice. The generated audio is returned to the app and stored
-    <strong>only on your device</strong>. So that "Listen" starts right away, the beginning is voiced right after a
+    <strong>on your device and in your private iCloud</strong> (section 7), not on our server. So that "Listen" starts right away, the beginning is voiced right after a
     story is created if you chose "AI voice". With "Read it yourself" this only happens when you explicitly ask for it.
     The consent from section 4 also applies here; without it, nothing is read aloud.
   </p>
   <p>
     Our server only voices texts it generated itself. For this, every paragraph gets a cryptographic signature that
-    contains no personal data.
+    contains no personal data. So that a story cannot be voiced any number of times, we count how often each section was
+    voiced. For this we store only a checksum of the section (without text) together with your anonymous ID or the
+    subscription's transaction number.
   </p>
   <p class="muted">Legal basis: Art. 6(1)(b) GDPR.</p>
 
   <h2>6. Usage allowance</h2>
   <p>
     To provide the free story and the subscription allowances and to prevent abuse, we store only two numbers per
-    week: how many stories were created and how many seconds were read aloud. Without a subscription, we count them for
+    week: how many stories were created and how many seconds of reading aloud were booked. The read-aloud seconds are
+    booked when a story with the AI voice is created. Without a subscription, we count them for
     your anonymous ID. With a subscription, we count them for Apple's transaction number of the subscription, so that all
     devices on one subscription share the allowance. These subscription counters are not linked to any ID and therefore
     remain after "Delete all data" until they are deleted automatically after 13 weeks. Otherwise, deleting could reset
@@ -169,12 +172,12 @@
     joining a story are sent to the AI.
   </p>
   <p>
-    The app also syncs child profiles, stories and favorites, plus a few settings (favorite voice,
+    The app also syncs child profiles, stories, favorites and voiced audio, plus a few settings (favorite voice,
     reading mode, font size), through Apple's iCloud (CloudKit) if you are signed in to iCloud with your Apple Account
     on the device. The data is then stored in your private iCloud storage, not with us: we have no access to it, and
     it counts towards your iCloud storage. This way it comes back on a new iPhone or after reinstalling the app, and it
-    appears on your other devices with the same Apple Account. Voiced audio is not synced; it stays on the device where
-    it was created. Apple's privacy policy applies to iCloud. You can turn syncing off in iOS Settings under your
+    appears on your other devices with the same Apple Account. Voiced audio is only downloaded when you listen to the
+    story on a device. Apple's privacy policy applies to iCloud. You can turn syncing off in iOS Settings under your
     name → iCloud; without iCloud, the data stays only on your device and is removed when you delete the app.
   </p>
   <p>
@@ -287,6 +290,7 @@
         <tr><td>Input for a story, text for reading aloud</td><td>not stored on our server; at Google only briefly for abuse detection</td></tr>
         <tr><td>Server logs (incl. IP address)</td><td>7 days at most</td></tr>
         <tr><td>Weekly usage counters (per ID or per subscription)</td><td>13 weeks, then deleted automatically; subscription counters also after "Delete all data"</td></tr>
+        <tr><td>Counters of how often a section was voiced (checksum only, no text)</td><td>13 weeks after the last voicing, then deleted automatically</td></tr>
         <tr><td>Anonymous ID</td><td>until 6 months after last use, then deleted automatically</td></tr>
         <tr><td>Subscription status (transaction number, product, expiry date, free trial)</td><td>together with the anonymous ID, i.e. at most 6 months after last use</td></tr>
         <tr><td>Emails to us</td><td>2 years after the request has been completed</td></tr>
@@ -294,7 +298,7 @@
         <tr><td>App Store notifications for analysis (type, product, price, country, transaction numbers)</td><td>2 years, then deleted automatically</td></tr>
         <tr><td>Messages from the contact form</td><td>2 years after they arrive, then deleted automatically</td></tr>
         <tr><td>Stories, audio and profiles on your device</td><td>until you delete them or the app</td></tr>
-        <tr><td>Stories, profiles, favorites and settings in your iCloud</td><td>until you delete them in the app or with "Delete all data", or remove them in your iCloud settings</td></tr>
+        <tr><td>Stories, audio, profiles, favorites and settings in your iCloud</td><td>until you delete them in the app or with "Delete all data", or remove them in your iCloud settings</td></tr>
         <tr><td>Usage statistics (TelemetryDeck)</td><td>anonymous, per TelemetryDeck's retention periods</td></tr>
       </tbody>
     </table>

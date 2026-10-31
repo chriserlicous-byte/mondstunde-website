@@ -63,7 +63,7 @@
     <ul>
       <li>Du brauchst <strong>kein Konto</strong>. Die App meldet sich mit einer zufälligen, anonymen Kennung an.</li>
       <li>Für eine Geschichte übertragen wir nur <strong>Vorname, Alter und Anrede</strong> deines Kindes sowie die gewählten Optionen, die Namen weiterer Figuren (mit Rolle) und die eingetragenen Lieblingsdinge. Zum Vorlesen kommt der Text der Geschichte hinzu.</li>
-      <li>Geschichten und Profile liegen <strong>auf deinem Gerät und in deiner privaten iCloud</strong>, Audio nur auf deinem Gerät. Auf unseren Servern liegen sie nicht, und wir haben keinen Zugriff darauf.</li>
+      <li>Geschichten, Profile und das Vorlese-Audio liegen <strong>auf deinem Gerät und in deiner privaten iCloud</strong>. Auf unseren Servern liegen sie nicht, und wir haben keinen Zugriff darauf.</li>
       <li>Die KI (Google Gemini) nutzt deine Angaben <strong>nicht zum Training</strong>.</li>
       <li>Eine anonyme Nutzungsstatistik gibt es <strong>nur mit deiner Einwilligung</strong>. Du kannst sie jederzeit in den Einstellungen ausschalten.</li>
       <li>Keine Werbung, kein Tracking über andere Apps, kein Verkauf von Daten.</li>
@@ -143,21 +143,25 @@ Christian Kau<br>
   <p>
     Damit eine Geschichte mit der KI-Stimme vorgelesen werden kann, sendet die App den Text der
     Geschichte abschnittsweise über unseren Server an Google Gemini. Das erzeugte Audio wird an die
-    App zurückgegeben und <strong>nur auf deinem Gerät</strong> gespeichert. Mitgesendet wird die gewählte
+    App zurückgegeben und <strong>auf deinem Gerät und in deiner privaten iCloud</strong> gespeichert (Abschnitt 7),
+    nicht auf unserem Server. Mitgesendet wird die gewählte
     Stimme. Damit „Anhören“ sofort startet, wird der Anfang direkt nach dem Erstellen vertont, wenn du
     „KI-Stimme“ gewählt hast. Bei „Selbst lesen“ geschieht das erst, wenn du es ausdrücklich möchtest.
     Auch dafür gilt die Zustimmung aus Abschnitt 4; ohne sie wird nicht vorgelesen.
   </p>
   <p>
     Unser Server vertont nur Texte, die er selbst erzeugt hat. Dazu erhält jeder Absatz eine
-    kryptografische Signatur, die keine personenbezogenen Daten enthält.
+    kryptografische Signatur, die keine personenbezogenen Daten enthält. Damit eine Geschichte nicht beliebig
+    oft vertont werden kann, zählen wir pro Abschnitt, wie oft er vertont wurde. Gespeichert wird dafür nur eine
+    Prüfsumme des Abschnitts (ohne Text) zusammen mit deiner anonymen Kennung bzw. der Transaktionsnummer des Abos.
   </p>
   <p class="muted">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.</p>
 
   <h2>6. Nutzungskontingent</h2>
   <p>
     Um die Gratis-Geschichte und die Abo-Kontingente umzusetzen und Missbrauch zu verhindern, speichern
-    wir pro Woche nur zwei Zahlen: wie viele Geschichten erstellt und wie viele Sekunden vorgelesen wurden.
+    wir pro Woche nur zwei Zahlen: wie viele Geschichten erstellt und wie viele Sekunden für das Vorlesen
+    gebucht wurden. Die Vorlese-Sekunden werden gebucht, wenn eine Geschichte mit KI-Stimme entsteht.
     Ohne Abo zählen wir zu deiner anonymen Kennung. Mit Abo zählen wir zu Apples Transaktionsnummer des Abos,
     damit sich alle Geräte eines Abos das Kontingent teilen. Diese Abo-Zähler hängen an keiner Kennung und
     bleiben deshalb auch nach „Alle Daten löschen“ bestehen, bis sie nach 13 Wochen automatisch gelöscht werden.
@@ -178,13 +182,13 @@ Christian Kau<br>
     An die KI gehen davon nur Name und Rolle derer, die bei einer Geschichte mitspielen.
   </p>
   <p>
-    Die App gleicht Kinderprofile, Geschichten und Favoriten sowie einige Einstellungen
+    Die App gleicht Kinderprofile, Geschichten, Favoriten und vertontes Audio sowie einige Einstellungen
     (Lieblingsstimme, Vorlese-Art, Schriftgröße) außerdem über Apples iCloud (CloudKit) ab, wenn du auf
     dem Gerät mit deinem Apple-Konto bei iCloud angemeldet bist. Die Daten liegen dann in deinem privaten
     iCloud-Speicher, nicht bei uns: Wir haben darauf keinen Zugriff, und sie zählen zu deinem
     iCloud-Speicherplatz. So kommen sie auf einem neuen iPhone oder nach dem Neuinstallieren der App zurück
-    und erscheinen auf deinen anderen Geräten mit demselben Apple-Konto. Vertontes Audio wird nicht
-    abgeglichen; es bleibt auf dem Gerät, auf dem es entstanden ist. Für iCloud gilt die
+    und erscheinen auf deinen anderen Geräten mit demselben Apple-Konto. Vertontes Audio wird erst
+    heruntergeladen, wenn du die Geschichte auf einem Gerät anhörst. Für iCloud gilt die
     Datenschutzerklärung von Apple. Abschalten kannst du den Abgleich in den iOS-Einstellungen unter
     deinem Namen → iCloud; ohne iCloud bleiben die Daten nur auf deinem Gerät und werden mit der App gelöscht.
   </p>
@@ -333,6 +337,7 @@ Christian Kau<br>
         <tr><td>Angaben für eine Geschichte, Text zum Vorlesen</td><td>nicht auf unserem Server gespeichert; bei Google nur kurzzeitig zur Missbrauchserkennung</td></tr>
         <tr><td>Server-Protokolle (inkl. IP-Adresse)</td><td>höchstens 7 Tage</td></tr>
         <tr><td>Wöchentliche Nutzungszähler (pro Kennung bzw. pro Abo)</td><td>13 Wochen, danach automatisch gelöscht; Zähler pro Abo auch nach „Alle Daten löschen“</td></tr>
+        <tr><td>Zähler, wie oft ein Abschnitt vertont wurde (nur Prüfsumme, ohne Text)</td><td>13 Wochen nach der letzten Vertonung, dann automatisch gelöscht</td></tr>
         <tr><td>Anonyme Kennung</td><td>bis 6 Monate nach der letzten Nutzung, dann automatisch gelöscht</td></tr>
         <tr><td>Abo-Status (Transaktionsnummer, Produkt, Ablaufdatum, Testphase)</td><td>zusammen mit der anonymen Kennung, also spätestens 6 Monate nach der letzten Nutzung</td></tr>
         <tr><td>Aktionscode-Daten (Code, Transaktionsnummern, Produkt, Preis, Abrechnungen)</td><td>2 Jahre nach Einlösung des Codes, dann automatisch gelöscht</td></tr>
@@ -340,7 +345,7 @@ Christian Kau<br>
         <tr><td>E-Mails an uns</td><td>2 Jahre nach Abschluss der Anfrage</td></tr>
         <tr><td>Nachrichten aus dem Kontaktformular</td><td>2 Jahre nach Eingang, dann automatisch gelöscht</td></tr>
         <tr><td>Geschichten, Audio, Profile auf deinem Gerät</td><td>bis du sie oder die App löschst</td></tr>
-        <tr><td>Geschichten, Profile, Favoriten und Einstellungen in deiner iCloud</td><td>bis du sie in der App oder mit „Alle Daten löschen“ löschst oder sie in den iCloud-Einstellungen entfernst</td></tr>
+        <tr><td>Geschichten, Audio, Profile, Favoriten und Einstellungen in deiner iCloud</td><td>bis du sie in der App oder mit „Alle Daten löschen“ löschst oder sie in den iCloud-Einstellungen entfernst</td></tr>
         <tr><td>Nutzungsstatistik (TelemetryDeck)</td><td>anonym, nach den Fristen von TelemetryDeck</td></tr>
       </tbody>
     </table>
