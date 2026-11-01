@@ -90,6 +90,8 @@ p { text-wrap: pretty; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 28px 0 0; }
 .chips li { font-size: 14px; color: var(--cream); padding: 6px 14px 6px 12px; border-radius: 999px; background: rgba(244, 238, 220, 0.06); border: 1px solid var(--line); display: inline-flex; align-items: center; gap: 8px; }
 .chips li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.chips a { color: inherit; text-decoration: none; }
+.chips a:hover { color: var(--gold); }
 .hero-phone { position: relative; display: grid; place-items: center; }
 .hero-phone .phone { width: min(320px, 74vw); }
 .glow {
@@ -131,18 +133,18 @@ h2 { font-size: clamp(28px, 4vw, 42px); line-height: 1.12; letter-spacing: -0.02
 .step h3 { font-size: 21px; margin: 12px 0 6px; }
 .step p { margin: 0; color: var(--mist); font-size: 16px; }
 
-/* Lesestufen */
-.levels {
-  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 64px); align-items: center;
-  background: linear-gradient(135deg, rgba(46, 56, 112, 0.6), rgba(20, 27, 60, 0.6));
-  border: 1px solid var(--line); border-radius: 32px; padding: clamp(24px, 5vw, 56px);
+/* Vier Vorteile in zwei Spalten; in „Wächst mit“ dieselbe Szene in drei Sprachstufen zum Umschalten. */
+.grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.level-demo { margin-top: 16px; }
+.level-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.level-tabs button {
+  display: inline-flex; align-items: center; gap: 8px; font: 700 14px/1 var(--font); color: var(--mist); cursor: pointer;
+  background: rgba(11, 16, 41, 0.45); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px;
+  transition: color .2s, border-color .2s, background-color .2s;
 }
-.levels .sub { margin-bottom: 0; }
-.level-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.level-list li { background: rgba(11, 16, 41, 0.55); border: 1px solid var(--line); border-radius: 20px; padding: 16px 20px; }
-.level-list li:nth-child(2) { border-color: rgba(245, 215, 122, 0.45); box-shadow: 0 0 0 1px rgba(245, 215, 122, 0.15); }
-.level-name { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--gold); }
-.level-list p { margin: 6px 0 0; font-size: 16px; color: var(--cream); }
+.level-tabs button:hover { border-color: rgba(245, 215, 122, 0.4); }
+.level-tabs button[aria-pressed="true"] { color: var(--gold); border-color: rgba(245, 215, 122, 0.5); background: var(--gold-soft); }
+.card .level-text { margin-top: 12px; color: var(--cream); font-size: 16px; }
 .bars { display: inline-flex; align-items: flex-end; gap: 3px; height: 14px; }
 .bars i { width: 4px; border-radius: 2px; background: rgba(245, 215, 122, 0.25); }
 .bars i:nth-child(1) { height: 6px; }
@@ -390,7 +392,6 @@ footer nav a:hover { color: var(--cream); }
 /* Tablet */
 @media (max-width: 960px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .levels { grid-template-columns: 1fr; }
   .top nav a.wide { display: none; }
 }
 @media (max-width: 860px) {
@@ -452,3 +453,53 @@ footer nav a:hover { color: var(--cream); }
 .speaker .more { margin-top: 10px; }
 .fine { color: var(--mist); font-size: 12px; opacity: 0.7; margin: 14px 0 0; }
 @media (max-width: 860px) { .speaker { grid-template-columns: 1fr; } }
+
+/* Vorlese-Adventskalender (nur vom 1. November bis Heiligabend auf der Startseite) */
+.advent {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: clamp(24px, 5vw, 64px); align-items: center;
+  background: radial-gradient(120% 120% at 100% 0%, rgba(245, 215, 122, 0.12), transparent 55%), linear-gradient(135deg, rgba(46, 56, 112, 0.55), rgba(20, 27, 60, 0.55));
+  border: 1px solid var(--line); border-radius: 32px; padding: clamp(24px, 5vw, 56px);
+}
+.advent .sub { margin-bottom: 24px; }
+.advent-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.advent-points li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; align-items: start; }
+.advent-points .ricon { width: 36px; height: 36px; border-radius: 12px; background: var(--gold-soft); border: 1px solid rgba(245, 215, 122, 0.22); }
+.advent-points h3 { margin: 2px 0 2px; font-size: 18px; line-height: 1.3; }
+.advent-points p { margin: 0; color: var(--mist); font-size: 16px; }
+.advent-fam { margin: 22px 0 0; }
+.advent-fam .fam { margin: 0; font-size: 13px; padding: 2px 10px; }
+.advent-phone { display: grid; place-items: center; }
+.advent-phone .phone { width: min(100%, 280px); }
+@media (max-width: 860px) {
+  .advent { grid-template-columns: 1fr; }
+  .advent-phone .phone { width: min(46vw, 180px); }
+}
+
+/* Schmaler: das Rezept der Hörprobe als Chips statt Zeilen (die Bezeichnung bleibt für Screenreader). */
+@media (max-width: 960px) {
+  .recipe { padding: 20px; }
+  .recipe-sub { margin-bottom: 12px; }
+  .recipe-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .recipe-list li, .recipe-list li:first-child {
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 9px;
+    border: 1px solid var(--line); border-radius: 999px; background: rgba(11, 16, 41, 0.45);
+  }
+  .recipe-list .ricon { width: auto; height: auto; background: none; border: 0; }
+  .recipe-list .ricon svg { width: 16px; height: 16px; }
+  .rlabel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .recipe-list .rvalue { font-size: 14.5px; line-height: 1.35; }
+}
+/* Handy: Vorteile untereinander, Serien-Ideen nur mit Titel. */
+@media (max-width: 560px) {
+  .grid.four { grid-template-columns: 1fr; }
+  .card .level-demo { grid-column: 2; }
+  .level-tabs button { padding: 7px 10px; font-size: 13px; }
+  .directions { gap: 8px; }
+  .directions li { padding: 10px 14px; }
+  .directions .part, .directions p { display: none; }
+  .directions h4 { margin: 0; font-size: 16px; }
+  .series-sub { margin-bottom: 12px; }
+  .advent-points { gap: 12px; }
+  .advent-points h3 { font-size: 17px; }
+  .advent-points p { font-size: 15px; }
+}
