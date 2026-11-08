@@ -341,6 +341,10 @@ th { color: var(--mist); font-weight: 600; }
 }
 .story-text p:hover { color: rgba(244, 238, 220, 0.9); }
 .story-text p.reading { color: var(--cream); border-left-color: var(--gold); }
+/* Wort-Markierung beim Vorlesen: das gesprochene Wort leuchtet kurz golden auf und klingt sanft wieder ab. */
+.story-text .w { transition: color .8s ease-out, text-shadow .8s ease-out; }
+.story-text .w.now { color: var(--gold); text-shadow: 0 0 14px rgba(245, 215, 122, 0.35); transition-duration: .12s; }
+@media (prefers-reduced-motion: reduce) { .story-text .w, .story-text .w.now { transition: none; text-shadow: none; } }
 .story-text.collapsed { -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); }
 .story-text.collapsed .later { display: none; }
 .more-toggle { font: 700 15px/1.2 var(--font); color: var(--gold); background: none; border: 0; padding: 6px 0; cursor: pointer; }

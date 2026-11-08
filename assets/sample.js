@@ -15,6 +15,7 @@
   const paragraphs = Array.from(text.querySelectorAll("p"));
   const starts = paragraphs.map((p) => parseFloat(p.dataset.start));
   const voiceButtons = Array.from(player.querySelectorAll(".voice"));
+  const words = wrapWords();
   const label = player.dataset;
 
   const RAIN_VOLUME = 0.2;
@@ -22,6 +23,29 @@
   let context, rainGain, rainSource, rainLoading;
   let current = -1;
   let seeking = false;
+
+  // Wort-Markierung: jedes Wort in ein <span>, Startzeit aus data-words (eine Zeit pro Wort, getrennt wie /\S+/g,
+  // erzeugt mit WebsiteSource/tools/sample_words.py). Passt die Zahl nicht, bleibt der Absatz unverändert.
+  function wrapWords() {
+    const list = [];
+    paragraphs.forEach((p) => {
+      if (!p.dataset.words) return;
+      const times = p.dataset.words.split(" ").map(Number);
+      const parts = p.textContent.split(/(\s+)/).filter(Boolean);
+      if (parts.filter((part) => /\S/.test(part)).length !== times.length) return;
+      p.textContent = "";
+      let index = 0;
+      parts.forEach((part) => {
+        if (!/\S/.test(part)) { p.appendChild(document.createTextNode(part)); return; }
+        const span = document.createElement("span");
+        span.className = "w";
+        span.textContent = part;
+        p.appendChild(span);
+        list.push({ el: span, time: times[index++] });
+      });
+    });
+    return list;
+  }
 
   const format = (seconds) => {
     const s = Math.max(0, Math.floor(seconds || 0));
@@ -77,6 +101,27 @@
     if (paragraphs[index].classList.contains("later") && text.classList.contains("collapsed")) expand(true);
   }
 
+  // Das gerade gesprochene Wort: das letzte, das schon begonnen hat (Wörter sind nach Zeit sortiert).
+  let currentWord = -1;
+  let frame = 0;
+  function highlightWord(time) {
+    let low = 0, high = words.length - 1, index = -1;
+    while (low <= high) {
+      const middle = (low + high) >> 1;
+      if (words[middle].time <= time + 0.05) { index = middle; low = middle + 1; } else high = middle - 1;
+    }
+    if (index === currentWord) return;
+    if (currentWord >= 0) words[currentWord].el.classList.remove("now");
+    currentWord = index;
+    if (index >= 0) words[index].el.classList.add("now");
+  }
+
+  // timeupdate kommt nur etwa viermal pro Sekunde; für die Wörter jedes Bild nachsehen, solange es läuft.
+  function followWords() {
+    highlightWord(audio.currentTime);
+    frame = audio.paused ? 0 : requestAnimationFrame(followWords);
+  }
+
   function expand(open) {
     text.classList.toggle("collapsed", !open);
     moreButton.setAttribute("aria-expanded", String(open));
@@ -99,14 +144,19 @@
   }
 
   playButton.addEventListener("click", () => (audio.paused ? play() : audio.pause()));
-  audio.addEventListener("play", () => setPlaying(true));
+  audio.addEventListener("play", () => {
+    setPlaying(true);
+    if (words.length && !frame) frame = requestAnimationFrame(followWords);
+  });
   audio.addEventListener("pause", () => setPlaying(false));
-  audio.addEventListener("ended", () => { setPlaying(false); highlight(-1); });
+  audio.addEventListener("ended", () => { setPlaying(false); highlight(-1); highlightWord(-1); });
   audio.addEventListener("timeupdate", () => {
     if (!seeking) seek.value = audio.currentTime;
     now.textContent = format(audio.currentTime);
     player.style.setProperty("--progress", `${(audio.currentTime / seek.max) * 100}%`);
     highlight(audio.currentTime);
+    // Auch hier, falls der Browser die Bild-Schleife drosselt (Tab im Hintergrund).
+    highlightWord(audio.currentTime);
   });
 
   seek.addEventListener("input", () => {
@@ -118,12 +168,14 @@
     audio.currentTime = parseFloat(seek.value);
     seeking = false;
     highlight(audio.currentTime);
+    highlightWord(audio.currentTime);
   });
 
-  // Absatz antippen: von dort vorlesen.
-  paragraphs.forEach((p, i) => p.addEventListener("click", () => {
+  // Absatz oder Wort antippen: von dort vorlesen.
+  paragraphs.forEach((p, i) => p.addEventListener("click", (event) => {
     if (window.getSelection && String(window.getSelection())) return;
-    audio.currentTime = starts[i] + 0.05;
+    const word = words.find((w) => w.el === event.target);
+    audio.currentTime = word ? word.time : starts[i] + 0.05;
     if (audio.paused) play();
   }));
 
